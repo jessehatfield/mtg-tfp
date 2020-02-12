@@ -31,7 +31,9 @@ def run_league_inference(
             use_resource=True)
     inner_kernel = tfp.mcmc.HamiltonianMonteCarlo(
         target_log_prob_fn=league_model.log_prob_fn(data['pairing_counts'], data['record_counts'],
-                                                    data['deck_counts'], data['win_counts'], data['loss_counts']),
+                                                    data['deck_counts'], data['win_counts'],
+                                                    data['loss_counts'], data['matchup_counts'],
+                                                    data['matchup_wins']),
         num_leapfrog_steps=leapfrog_steps,
         step_size=step_size,
         step_size_update_fn=tfp.mcmc.make_simple_step_size_update_policy(num_adaptation_steps=int(burn_in*.8)),
@@ -135,7 +137,8 @@ def evaluate_parameters(session, model, obs_data, field, matchups, wait):
     true_wait = tf.reshape(tf.constant(wait, dtype=tf.float32), (1, 1))
     ll_true = model.log_prob_fn(
         obs_data['pairing_counts'], obs_data['record_counts'],
-        obs_data['deck_counts'], obs_data['win_counts'], obs_data['loss_counts']
+        obs_data['deck_counts'], obs_data['win_counts'], obs_data['loss_counts'],
+        obs_data['matchup_counts'], obs_data['matchup_wins']
     )(true_field, true_matchups, true_wait)
     ll, matchup_params = session.run([ll_true, true_matchups])
     return ll
@@ -166,14 +169,16 @@ def process_results(session, results, labels, burn_in, out_dir=None, plot=True):
         plot_posteriors(results, labels, burn_in)
 
 
-def generate_sample_data(session, n_archetypes, n_rounds, wait_time, n_matches):
+def generate_sample_data(session, n_archetypes, n_rounds, wait_time, n_matches, extra_matches):
     gen_params, gen_data = generate.gen_league_data(session, n_archetypes, n_rounds, n_matches, wait_time,
-                                                    ind_winners=20)
+                                                    ind_winners=20, ind_matches=extra_matches)
     print("----Ground Truth----\nM ==\n{}\nfield == {}\nev == {}".format(
         indent(gen_params['matchups']), gen_params['field'], gen_params['ev']))
     print("----Data----\npairings ==\n{}\nrecords ==\n{}\nindependent observations==\n{}\n{}\n{}\n".format(
         indent(gen_data['pairing_counts']), indent(gen_data['record_counts']),
         indent(gen_data['deck_counts']), indent(gen_data['win_counts']), indent(gen_data['loss_counts'])))
+    print("independent matchup results==\ncounts:{}\n  wins:{}\n".format(
+        indent(gen_data['matchup_counts']), indent(gen_data['matchup_wins'])))
     return gen_params, gen_data, ["$d_{}$".format(i) for i in range(n_archetypes)]
 
 
@@ -182,7 +187,7 @@ def run_example():
     n_chains = 4
     burn_in = 100
     n_samples = 5000
-    params, data, labels = generate_sample_data(sess, 3, 3, 10, 100)
+    params, data, labels = generate_sample_data(sess, 3, 3, 10, 100, 200)
     t_model, results = run_league_inference(sess, data, num_samples=n_samples, burn_in=burn_in, num_chains=n_chains)
     true_ll = evaluate_parameters(sess, t_model, data, params['field'], params['matchups'], params['wait_time'])
     print("Ground truth log-likelihood:", true_ll)
@@ -197,7 +202,7 @@ def load_results(in_dir):
     process_results(tf.Session(), results, labels, results['burn_in'] if 'burn_in' in results else 0)
 
 
-def load_data(league_data_file, record_data_file, selection, substitution_file=None):
+def load_data(league_data_file, record_data_file, selection, substitution_file=None, matchup_file=None):
     archetype_pairings = {}
     archetype_totals = {}
     score_pairings = {}
@@ -260,6 +265,27 @@ def load_data(league_data_file, record_data_file, selection, substitution_file=N
             deck_counts[deck] = deck_counts.get(deck, 0) + 1
             win_counts[deck] = win_counts.get(deck, 0) + w
             loss_counts[deck] = loss_counts.get(deck, 0) + l
+    extra_match_counts = {}
+    extra_match_wins = {}
+    with open(matchup_file) as csvfile:
+        reader = csv.DictReader(csvfile)
+        for row in reader:
+            deck1 = row.get('deck 1', '')
+            deck1 = substitutions.get(deck1, deck1)
+            deck2 = row.get('deck 2', '')
+            deck2 = substitutions.get(deck2, deck2)
+            w = int(row['w']) if len(row.get('w', '')) > 0 else None
+            l = int(row['l']) if len(row.get('l', '')) > 0 else None
+            n = int(row['total']) if len(row.get('total', '')) > 0 else None
+            if w is None or (l is None and n is None):
+                print('SKIPPING ROW: {}'.format(row))
+                continue
+            if n is None:
+                n = w + l
+            extra_match_counts[deck1] = extra_match_counts.get(deck1, {})
+            extra_match_counts[deck1][deck2] = extra_match_counts[deck1].get(deck2, 0) + n
+            extra_match_wins[deck1] = extra_match_wins.get(deck1, {})
+            extra_match_wins[deck1][deck2] = extra_match_wins[deck1].get(deck2, 0) + w
     archetypes = list(archetype_totals.keys())
     archetypes.sort(key=lambda x: 1 if x == 'Misc.' else -(archetype_totals[x]+deck_counts.get(x, 0)))
     if selection.isdigit():
@@ -298,7 +324,9 @@ def load_data(league_data_file, record_data_file, selection, substitution_file=N
         'record_counts': record_counts,
         'deck_counts': [deck_counts.get(x, 0) for x in archetypes],
         'win_counts': [win_counts.get(x, 0) for x in archetypes],
-        'loss_counts': [loss_counts.get(x, 0) for x in archetypes]
+        'loss_counts': [loss_counts.get(x, 0) for x in archetypes],
+        'matchup_counts': np.array([[extra_match_counts.get(x, {}).get(y, 0) for y in archetypes] for x in archetypes], dtype=np.float64),
+        'matchup_wins': np.array([[extra_match_wins.get(x, {}).get(y, 0) for y in archetypes] for x in archetypes], dtype=np.float64)
     }
     archetype_list = archetypes[:n] + ["Misc."]
     consolidated_data = consolidate(fully_specified_data, n)
@@ -329,6 +357,19 @@ def consolidate(data, n):
             total = sum([data[key][j] for j in range(n, len(data[key]))])
             new_list.append(total)
             transformed[key] = new_list
+    for key in {'matchup_counts', 'matchup_wins'}:
+        temp_counts = []
+        for i in range(len(data[key])):
+            old_counts = data[key][i]
+            new_counts = [data[key][i][j] for j in range(n)]
+            total = sum([data[key][i][j] for j in range(n, len(old_counts))])
+            new_counts.append(total)
+            temp_counts.append(new_counts)
+        transformed_counts = [temp_counts[i] for i in range(n)]
+        n_misc = len(data[key])
+        misc_counts = [sum([temp_counts[i][j] for i in range(n, n_misc)]) for j in range(n+1)]
+        transformed_counts.append(misc_counts)
+        transformed[key] = np.array(transformed_counts, dtype=np.float32)
     return transformed
 
 
@@ -337,8 +378,9 @@ if __name__ == "__main__":
         load_results(sys.argv[1])
     elif len(sys.argv) >= 4:
         out_dir = sys.argv[4] if len(sys.argv) >= 5 else None
-        substitution_file = sys.argv[5] if len(sys.argv) >= 6 else None
-        data, labels = load_data(sys.argv[1], sys.argv[2], sys.argv[3], substitution_file)
+        matchup_file = sys.argv[5] if len(sys.argv) >= 6 else None
+        substitution_file = sys.argv[6] if len(sys.argv) >= 7 else None
+        data, labels = load_data(sys.argv[1], sys.argv[2], sys.argv[3], substitution_file, matchup_file)
         sess = tf.Session()
         n_samples = 20100
         burn_in = 100

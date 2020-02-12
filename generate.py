@@ -211,7 +211,23 @@ def gen_sample_data(
     })
 
 
-def gen_matches(field, ev, n_individuals, n_matches_per_ind):
+def gen_matches(field, matchups, n_matches):
+    sample = {}
+    match_counts = np.zeros((len(field), len(field)), dtype=np.float32)
+    wins = np.zeros((len(field), len(field)), dtype=np.float32)
+    for i in range(n_matches):
+        decks = np.random.choice(len(field), size=2, replace=False, p=None)
+        d1 = decks[0] if decks[0] <= decks[1] else decks[1]
+        d2 = decks[1] if decks[0] <= decks[1] else decks[0]
+        match_counts[d1][d2] += 1.0
+        if np.random.random() < matchups[d1][d2]:
+            wins[d1][d2] += 1.0
+    sample['matchup_counts'] = match_counts
+    sample['matchup_wins'] = wins
+    return sample
+
+
+def gen_match_wins(field, ev, n_individuals, n_matches_per_ind):
     sample = {}
     sample['deck_counts'] = np.random.multinomial(n_individuals, field)
     sample['match_counts'] = sample['deck_counts'] * n_matches_per_ind
@@ -262,7 +278,8 @@ def gen_league_data(
     sample = session.run({'field': field, 'matchups': matchups, 'matchups_free': p_win, 'ev': ev})
     sample['wait_time'] = wait_time
     sim_data = simulation.generate_league(sample['field'], sample['matchups'], n_rounds, n_matches, tries=wait_time)
-#    ind_data = gen_matches(sample['field'], sample['ev'], ind_decks, ind_matches)
+#    foo = gen_match_wins(sample['field'], sample['ev'], ind_decks, ind_matches)
+    matchup_data = gen_matches(sample['field'], sample['matchups'], ind_matches)
     ind_data = gen_winners(sample['field'], sample['ev'], ind_winners, winner_win_count, winner_loss_count)
     obs_data = {'pairing_counts': np.array(sim_data['pairing_counts']),
                 'record_counts': np.array(sim_data['record_counts']),
@@ -270,7 +287,9 @@ def gen_league_data(
                 'n_archetypes': n_archetypes,
                 'deck_counts': ind_data['deck_counts'],
                 'win_counts': ind_data['win_counts'],
-                'loss_counts': ind_data['loss_counts']
+                'loss_counts': ind_data['loss_counts'],
+                'matchup_counts': matchup_data['matchup_counts'],
+                'matchup_wins': matchup_data['matchup_wins']
                 }
     return sample, obs_data
 

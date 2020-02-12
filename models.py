@@ -219,7 +219,8 @@ class LeagueModel(TournamentModel):
         return p_score_given_score
 #        return tf.eye(self.n_scores, self.n_scores)
 
-    def log_prob_fn(self, pairing_counts, record_counts, deck_counts, win_counts, loss_counts):
+    def log_prob_fn(self, pairing_counts, record_counts, deck_counts, win_counts, loss_counts,
+                    matchup_counts, matchup_wins):
         """Args:
             pairing_counts: r x d tensor, where each row is the observed distribution of opposing
                             decks given a particular player record.
@@ -231,6 +232,11 @@ class LeagueModel(TournamentModel):
                         observations of the deck outside of the league context, with unknown opponents.
             loss_counts: rank 1 tensor, where each entry is the total number of losses across independent
                          observations of the deck outside of the league context, with unknown opponents.
+            matchup_counts: d x d tensor, where each entry is the total number of independent matchup
+                            observations of a pair of decks outside the league context, with possibly
+                            unrelated sampling distribution
+            matchup_wins: d x d tensor, where each entry is the number of those independent matchup
+                            observations where the first deck won.
         """
         def log_prob(candidate_field, candidate_matchups, candidate_wait_time):
             """Joint log probability for a candidate field distribution, matchup distribution, and wait time"""
@@ -253,19 +259,23 @@ class LeagueModel(TournamentModel):
             ll_priors = ll_field + ll_matchups + ll_wait
             ll_pairings = pairings_log_prob(pairing_counts, p_opp_deck_given_pl_record)
             ll_records = pairings_log_prob(record_counts, p_deck_given_record_approx)
-            # To add in independent match observations, calculate per-match EV (dimensions c * d * 1)
+            # To add in independent record observations, calculate per-match EV (dimensions c * d * 1)
             candidate_ev = tf.linalg.matmul(candidate_matchup_matrix, tf.expand_dims(candidate_field, -1))
             # Calculate logs of match results and deck probability
             log_p_win = tf.reshape(tf.log(candidate_ev), (n_hypotheses, self.n_archetypes))  # c * d
             log_p_lose = tf.reshape(tf.log(1.0 - candidate_ev), (n_hypotheses, self.n_archetypes))  # c * d
             log_p_deck = tf.log(candidate_field)  # c * d
+            # To add in independent matchup observations, calculate per-pairing log prob (dimensions c * d * d)
+            ind_matchups = tfp.distributions.Binomial(probs=candidate_matchup_matrix, total_count=matchup_counts)
+            ll_ind_pairings = ind_matchups.log_prob(matchup_wins)
+            ll_ind_match = tf.reduce_sum(tf.reduce_sum(ll_ind_pairings, axis=-1), axis=-1)
             # Multiply observed individual results (d) elementwise by log probabilities of results per archetype (c * d)
             # Then sum over archetypes
             ll_obs_wins = log_p_win * win_counts
             ll_obs_losses = log_p_lose * loss_counts
             ll_obs_counts = log_p_deck * deck_counts
             ll_independent = tf.reduce_sum(ll_obs_wins + ll_obs_losses + ll_obs_counts, axis=-1)
-            ll = ll_pairings + ll_records + ll_priors + ll_independent
+            ll = ll_pairings + ll_records + ll_priors + ll_independent + ll_ind_match
             return ll
 
         return log_prob
