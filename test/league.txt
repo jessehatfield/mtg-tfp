@@ -1,0 +1,10 @@
+w,l,deck
+0,0,Goblins
+1,0,Zoo
+1,1,Merfolk
+0,0,Belcher
+0,1,Belcher
+1,1,Merfolk
+2,1,Stoneblade
+2,2,Elves
+0,0,TES

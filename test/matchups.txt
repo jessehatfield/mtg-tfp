@@ -1,0 +1,7 @@
+deck 1,deck 2,w,l
+Elves,Merfolk,1,0
+TES,Merfolk,0,1
+Zoo,Merfolk,8,2
+Zoo,Goblins,2,3
+Belcher,TES,1,2
+Belcher,Elves,3,0

@@ -1,3 +1,5 @@
+#!/usr/bin/env python
+
 import tensorflow as tf
 import tensorflow_probability as tfp
 
@@ -270,9 +272,9 @@ def load_data(league_data_file, record_data_file, selection, substitution_file=N
     with open(matchup_file) as csvfile:
         reader = csv.DictReader(csvfile)
         for row in reader:
-            deck1 = row.get('deck 1', '')
+            deck1 = row.get('deck 1', row.get('deck', row.get('archetype', row.get('archetype 1', ''))))
             deck1 = substitutions.get(deck1, deck1)
-            deck2 = row.get('deck 2', '')
+            deck2 = row.get('deck 2', row.get('opp_deck', row.get('opp_archetype', row.get('archetype 2', ''))))
             deck2 = substitutions.get(deck2, deck2)
             w = int(row['w']) if len(row.get('w', '')) > 0 else None
             l = int(row['l']) if len(row.get('l', '')) > 0 else None
@@ -382,8 +384,8 @@ if __name__ == "__main__":
         substitution_file = sys.argv[6] if len(sys.argv) >= 7 else None
         data, labels = load_data(sys.argv[1], sys.argv[2], sys.argv[3], substitution_file, matchup_file)
         sess = tf.Session()
-        n_samples = 20100
-        burn_in = 100
+        n_samples = 2010#0
+        burn_in = 10#0
         t_model, results = run_league_inference(sess, data,
                                                 num_samples=n_samples, sample_interval=0,
                                                 burn_in=burn_in, num_chains=4)

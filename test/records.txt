@@ -1,0 +1,6 @@
+deck,w,l
+Goblins,4,3
+Elves,5,2
+Zoo,6,2
+Merfolk,6,2
+Belcher,3,3
