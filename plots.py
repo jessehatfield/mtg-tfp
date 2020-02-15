@@ -38,9 +38,10 @@ def p_posterior(data, ax=None, hist=False, color=None, rug=True, xlabel=None, di
     fill_interval(ax, x, y, .95, color, .2, data)
     fill_interval(ax, x, y, .5, color, .2, data)
     ax.axvline(0.5, c='#888888', linestyle='--', linewidth=1)
+    return x, y
 
 
-def matchup_matrix_posterior(samples, ev=None, title=None):
+def matchup_matrix_posterior(samples, ev=None, title=None, archetypes=None, filename=None):
     n_archetypes = samples.shape[-1]
     samples = reduce_dimension(samples, 3)
     if ev is not None:
@@ -55,10 +56,20 @@ def matchup_matrix_posterior(samples, ev=None, title=None):
                 p_posterior(samples[:, i, j], ax=sub)
             elif ev is not None:
                 p_posterior(ev[:, i], ax=sub, color='#009922')
+            if archetypes is not None:
+                if i == 0:
+                    sub.set_title(archetypes[j])
+                if j == 0:
+                    sub.set_ylabel(archetypes[i], size='large')
             k += 1
     if title is not None:
         plt.suptitle(title)
-    plt.show()
+    if filename is None:
+        plt.show()
+    else:
+        plt.gcf().set_size_inches(2 + 1.5*n_archetypes, 1 + 1.5*n_archetypes)
+        plt.savefig(filename)
+        plt.close()
 
 
 def reduce_dimension(arr, ndims):
@@ -70,27 +81,39 @@ def reduce_dimension(arr, ndims):
         return np.reshape(arr, new_shape)
 
 
-def field_posterior(samples, xlabel=None, dist_labels=None):
+def field_posterior(samples, xlabel=None, dist_labels=None, filename=None):
     samples = reduce_dimension(samples, 2)
     n_archetypes = samples.shape[1]
     ax = plt.gca()
     plt.xlim([0, 1])
+    ymax = 0.01
     for i in range(n_archetypes):
         dist_label = None if dist_labels is None else dist_labels[i]
-        p_posterior(samples[:, i], ax=ax, xlabel=xlabel, dist_label=dist_label)
-    plt.show()
+        x, y = p_posterior(samples[:, i], ax=ax, xlabel=xlabel, dist_label=dist_label)
+        ymax = max(ymax, max(y))
+    plt.ylim([0, ymax*1.2])
+    if filename is None:
+        plt.show()
+    else:
+        plt.gcf().set_size_inches(16, 8)
+        plt.savefig(filename)
+        plt.close()
 
 
-def constant_posterior(samples):
-    p_posterior(np.ravel(samples))
-    plt.show()
+def constant_posterior(samples, label=None, filename=None):
+    p_posterior(np.ravel(samples), dist_label=label)
+    if filename is None:
+        plt.show()
+    else:
+        plt.savefig(filename)
+        plt.close()
 
 
 def enable_latex():
     plt.rcParams.update({"font.family": "serif", "font.serif": [], "font.sans-serif": ["DejaVuSans"]})
 
 
-def trace(samples, plots=None, title=None, xlabel=None, ylabel=None):
+def trace(samples, plots=None, title=None, xlabel=None, ylabel=None, filename=None):
     ax = plt.gca()
     if plots is None:
         plot_trace(samples, title, xlabel, ylabel, ax)
@@ -120,7 +143,11 @@ def trace(samples, plots=None, title=None, xlabel=None, ylabel=None):
             sub = plt.subplot(n_rows, n_cols, k)
             plot_trace(samples_i, xlabel=xlabel, ylabel=plots[i], ax=sub)
             k += 1
-    plt.show()
+    if filename is None:
+        plt.show()
+    else:
+        plt.savefig(filename)
+        plt.close()
 
 
 def plot_trace(samples, title=None, xlabel=None, ylabel=None, ax=None):

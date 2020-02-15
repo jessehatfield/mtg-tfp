@@ -107,7 +107,7 @@ def summarize_run(mcmc_results, archetype_labels, burn_in):
         print(f"\t{archetype_labels[i]:20}{stats}")
 
 
-def plot_traces(mcmc_results, archetype_labels):
+def plot_traces(mcmc_results, archetype_labels, out_dir=None):
     session = tf.get_default_session()
     if session is None:
         session = tf.Session()
@@ -116,20 +116,31 @@ def plot_traces(mcmc_results, archetype_labels):
     plots.trace(tlp,
                 title="Log-Likelihood of MCMC Samples",
                 xlabel="$t$",
-                ylabel="$\\log P(X|\\Theta_t)$")
-    plots.trace(mcmc_results["wait_time"], xlabel="$t$", title="Parameter Trace: Wait Time", ylabel="$w$")
-    plots.trace(mcmc_results["field"], xlabel="$t$", title="Parameter Trace: $P(Deck)$", plots=archetype_labels)
+                ylabel="$\\log P(X|\\Theta_t)$",
+                filename=None if out_dir is None else f"{out_dir}/ll_mcmc_samples.png")
+    plots.trace(mcmc_results["wait_time"], xlabel="$t$", title="Parameter Trace: Wait Time",
+                ylabel="$w$",
+                filename=None if out_dir is None else f"{out_dir}/trace_wait_time.png")
+    plots.trace(mcmc_results["field"], xlabel="$t$", title="Parameter Trace: $P(Deck)$",
+                plots=archetype_labels,
+                filename=None if out_dir is None else f"{out_dir}/trace_field.png")
     plots.trace(mcmc_results["matchups_free"], xlabel="$t$", title="Parameter Trace: $P(w|d_i vs. d_j)$",
-                plots=["{} vs. {}".format(archetype_labels[pair[0]], archetype_labels[pair[1]]) for pair in indices])
+                plots=["{} vs. {}".format(archetype_labels[pair[0]], archetype_labels[pair[1]]) for pair in indices],
+                filename=None if out_dir is None else f"{out_dir}/trace_matchups.png")
 
 
-def plot_posteriors(mcmc_results, archetype_labels, burn_in):
+def plot_posteriors(mcmc_results, archetype_labels, burn_in, out_dir=None):
 #    plots.matchup_matrix_posterior(mcmc_results["score_matrix"])
-    plots.constant_posterior(mcmc_results["wait_time"][burn_in:, :, :])
+    plots.constant_posterior(mcmc_results["wait_time"][burn_in:, :, :], "Posterior Wait Time",
+                             filename=None if out_dir is None else f"{out_dir}/wait_time.png")
     plots.field_posterior(mcmc_results["field"][burn_in:, :, :], xlabel="Posterior Field Proportion",
-                          dist_labels=archetype_labels)
+                          dist_labels=archetype_labels,
+                          filename=None if out_dir is None else f"{out_dir}/field.png")
     plots.matchup_matrix_posterior(mcmc_results["matchup_matrix"][burn_in:, :, :, :],
-                                   mcmc_results["ev"][burn_in:, :, :])
+                                   ev=mcmc_results["ev"][burn_in:, :, :],
+                                   title="Posterior Matchup Matrix",
+                                   archetypes=archetype_labels,
+                                   filename=None if out_dir is None else f"{out_dir}/matchups.png")
 
 
 def evaluate_parameters(session, model, obs_data, field, matchups, wait):
@@ -146,7 +157,7 @@ def evaluate_parameters(session, model, obs_data, field, matchups, wait):
     return ll
 
 
-def process_results(session, results, labels, burn_in, out_dir=None, plot=True):
+def process_results(session, results, labels, burn_in, out_dir=None, show_plots=True, plot_dir=None):
     results['burn_in'] = burn_in
     summarize_run(results, labels, burn_in)
     if out_dir is not None:
@@ -166,9 +177,12 @@ def process_results(session, results, labels, burn_in, out_dir=None, plot=True):
         indices = session.run(generate.free_to_matrix(len(labels)))
         matchups_header = ','.join([f"{labels[pair[0]]} vs. {labels[pair[1]]}" for pair in indices])
         np.savetxt(out_dir + "/trace_matchups.csv", matchups_2d, fmt="%10.7f", delimiter=",", header=matchups_header)
-    if plot:
+    if show_plots:
         plot_traces(results, labels)
         plot_posteriors(results, labels, burn_in)
+    if plot_dir is not None:
+        plot_traces(results, labels, out_dir=plot_dir)
+        plot_posteriors(results, labels, burn_in, out_dir=plot_dir)
 
 
 def generate_sample_data(session, n_archetypes, n_rounds, wait_time, n_matches, extra_matches):
@@ -196,12 +210,14 @@ def run_example():
     process_results(sess, results, labels, burn_in, "temp")
 
 
-def load_results(in_dir):
+def load_results(in_dir, plot_dir=None):
     with open(in_dir + '/results.pkl', 'rb') as in_file:
         results = pickle.load(in_file)
     with open(in_dir + '/labels.pkl', 'rb') as in_file:
         labels = pickle.load(in_file)
-    process_results(tf.Session(), results, labels, results['burn_in'] if 'burn_in' in results else 0)
+    process_results(tf.Session(), results, labels,
+                    results['burn_in'] if 'burn_in' in results else 0,
+                    plot_dir=plot_dir, show_plots=plot_dir is None)
 
 
 def load_data(league_data_file, record_data_file, selection, substitution_file=None, matchup_file=None):
@@ -284,6 +300,11 @@ def load_data(league_data_file, record_data_file, selection, substitution_file=N
                 continue
             if n is None:
                 n = w + l
+            if deck1 == deck2:
+                continue
+            elif extra_match_counts.get(deck2, {}).get(deck1, 0) == n:
+                print('SKIPPING {} vs. {}, already processed in reverse order'.format(deck2, deck1))
+                continue
             extra_match_counts[deck1] = extra_match_counts.get(deck1, {})
             extra_match_counts[deck1][deck2] = extra_match_counts[deck1].get(deck2, 0) + n
             extra_match_wins[deck1] = extra_match_wins.get(deck1, {})
@@ -378,18 +399,25 @@ def consolidate(data, n):
 if __name__ == "__main__":
     if len(sys.argv) == 2:
         load_results(sys.argv[1])
+    elif len(sys.argv) == 3:
+        load_results(sys.argv[1], sys.argv[2])
     elif len(sys.argv) >= 4:
+        league_input_file = sys.argv[1]
+        record_input_file = sys.argv[2]
+        deck_selection = sys.argv[3]
         out_dir = sys.argv[4] if len(sys.argv) >= 5 else None
         matchup_file = sys.argv[5] if len(sys.argv) >= 6 else None
         substitution_file = sys.argv[6] if len(sys.argv) >= 7 else None
-        data, labels = load_data(sys.argv[1], sys.argv[2], sys.argv[3], substitution_file, matchup_file)
+        plot_dir = sys.argv[7] if len(sys.argv) >= 8 else None
+
+        data, labels = load_data(league_input_file, record_input_file, deck_selection, substitution_file, matchup_file)
         sess = tf.Session()
-        n_samples = 2010#0
-        burn_in = 10#0
+        n_samples = 50100
+        burn_in = 1000
         t_model, results = run_league_inference(sess, data,
                                                 num_samples=n_samples, sample_interval=0,
                                                 burn_in=burn_in, num_chains=4)
-        process_results(sess, results, labels, burn_in, out_dir, False)
+        process_results(sess, results, labels, burn_in, out_dir, False, plot_dir=plot_dir)
     else:
         run_example()
 
