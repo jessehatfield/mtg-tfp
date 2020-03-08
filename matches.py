@@ -6,13 +6,14 @@ import tensorflow_probability as tfp
 from math import ceil
 import numpy as np
 
+import argparse
 import csv
 import pickle
+import sys
 
 import generate
 import plots
 from models import LeagueModel
-import sys
 
 
 def run_league_inference(
@@ -82,12 +83,15 @@ def summarize_run(mcmc_results, archetype_labels, burn_in):
                                np.std(flat_field, axis=0, keepdims=True),
                                np.nanpercentile(flat_field, [5, 25, 50, 75, 95], axis=0)]).transpose()
     print(f"\t{'Archetype':20}{'Mean':>10}{'Std.Dev':>10}{'5%':>10}{'25%':>10}{'50%':>10}{'75%':>10}{'95%':>10}")
+    for i in range(len(archetype_labels)):
+        stats = ("{:10f}" * len(field_summary[i])).format(*field_summary[i])
+        print(f"\t{archetype_labels[i]:20}{stats}")
     flat_matchups = plots.reduce_dimension(mcmc_results["matchup_matrix"][burn_in:, :, :, :], 3)
     fixed_ev = np.matmul(flat_matchups, np.expand_dims(flat_field, -1))[:, :, 0]
     ev_summary = np.vstack([np.mean(fixed_ev, axis=0, keepdims=True),
                             np.std(fixed_ev, axis=0, keepdims=True),
                             np.nanpercentile(fixed_ev, [5, 25, 50, 75, 95], axis=0)]).transpose()
-    print("EV stats (method 2):")
+    print("EV stats:")
     print(f"\t{'Archetype':20}{'Mean':>10}{'Std.Dev':>10}{'5%':>10}{'25%':>10}{'50%':>10}{'75%':>10}{'95%':>10}")
     for i in range(len(archetype_labels)):
         stats = ("{:10f}" * len(ev_summary[i])).format(*ev_summary[i])
@@ -199,214 +203,239 @@ def run_example():
     process_results(sess, results, labels, burn_in, "temp")
 
 
-def load_results(in_dir, plot_dir=None):
-    with open(in_dir + '/results.pkl', 'rb') as in_file:
-        results = pickle.load(in_file)
-    with open(in_dir + '/labels.pkl', 'rb') as in_file:
-        labels = pickle.load(in_file)
-    process_results(tf.Session(), results, labels,
-                    results['burn_in'] if 'burn_in' in results else 0,
-                    plot_dir=plot_dir, show_plots=plot_dir is None)
+class InputData(object):
+    def __init__(self):
+        self.archetype_pairings = {}
+        self.archetype_totals = {}
+        self.score_pairings = {}
+        self.archetype_records = {}
+        self.n_rounds = 0
+        self.substitutions = {'Rogue': 'Misc.', 'Unknown': 'Misc.'}
+        self.deck_counts = {}
+        self.win_counts = {}
+        self.loss_counts = {}
+        self.extra_match_counts = {}
+        self.extra_match_wins = {}
 
-
-def load_data(league_data_file, record_data_file, selection, substitution_file=None, matchup_file=None):
-    archetype_pairings = {}
-    archetype_totals = {}
-    score_pairings = {}
-    archetype_records = {}
-    n_rounds = 0
-    substitutions = {}
-    if substitution_file is not None:
+    def load_substitutions(self, substitution_file):
         with open(substitution_file) as csvfile:
             reader = csv.reader(csvfile)
             for row in reader:
                 if len(row) == 2:
-                    substitutions[row[1].strip()] = row[0].strip()
-    substitutions['Rogue'] = substitutions.get('Rogue', 'Misc.')
-    substitutions['Unknown'] = substitutions.get('Unknown', 'Misc.')
-    with open(league_data_file) as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            w = int(row['w']) if len(row.get('w', '')) > 0 else None
-            l = int(row['l']) if len(row.get('l', '')) > 0 else None
-            opponent = row.get('Opposing Deck', row.get('deck', ''))
-            opponent = substitutions.get(opponent, opponent)
-            if w is None or l is None or len(opponent) == 0:
-                print('SKIPPING ROW: {}'.format(row))
-                continue
-            opp_w = int(row['opp_w']) if len(row.get('opp_w', '')) > 0 else None
-            opp_l = int(row['opp_l']) if len(row.get('opp_l', '')) > 0 else None
-            score = w-l
-            n_rounds = max(n_rounds, w+l)
-            archetype_totals[opponent] = archetype_totals.get(opponent, 0) + 1
-            if opponent not in archetype_pairings:
-                archetype_pairings[opponent] = {}
-            if opponent not in archetype_records:
-                archetype_records[opponent] = {}
-            if opp_w is not None and opp_l is not None:
-                opp_record = (opp_w, opp_l)
-                opp_score = opp_w - opp_l
-                if opp_score not in score_pairings:
-                    score_pairings[opp_score] = {}
-                archetype_records[opponent][opp_record] = archetype_records[opponent].get(opp_record, 0) + 1
-                score_pairings[opp_score][score] = score_pairings[opp_score].get(score, 0) + 1
-            else:
-                record = (w, l)
-                archetype_pairings[opponent][record] = archetype_pairings[opponent].get(record, 0) + 1
-    deck_counts = {}
-    win_counts = {}
-    loss_counts = {}
-    with open(record_data_file) as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            w = int(row['w']) if len(row.get('w', '')) > 0 else None
-            l = int(row['l']) if len(row.get('l', '')) > 0 else None
-            deck = row.get('deck', '')
-            deck = substitutions.get(deck, deck)
-            if w is None or l is None or len(deck) == 0:
-                print('SKIPPING ROW: {}'.format(row))
-                continue
-            archetype_totals[deck] = archetype_totals.get(deck, 0)
-            archetype_pairings[deck] = archetype_pairings.get(deck, {})
-            archetype_records[deck] = archetype_records.get(deck, {})
-            deck_counts[deck] = deck_counts.get(deck, 0) + 1
-            win_counts[deck] = win_counts.get(deck, 0) + w
-            loss_counts[deck] = loss_counts.get(deck, 0) + l
-    extra_match_counts = {}
-    extra_match_wins = {}
-    with open(matchup_file) as csvfile:
-        reader = csv.DictReader(csvfile)
-        for row in reader:
-            deck1 = row.get('deck 1', row.get('deck', row.get('archetype', row.get('archetype 1', ''))))
-            deck1 = substitutions.get(deck1, deck1)
-            deck2 = row.get('deck 2', row.get('opp_deck', row.get('opp_archetype', row.get('archetype 2', ''))))
-            deck2 = substitutions.get(deck2, deck2)
-            w = int(row['w']) if len(row.get('w', '')) > 0 else None
-            l = int(row['l']) if len(row.get('l', '')) > 0 else None
-            n = int(row['total']) if len(row.get('total', '')) > 0 else None
-            if w is None or (l is None and n is None):
-                print('SKIPPING ROW: {}'.format(row))
-                continue
-            if n is None:
-                n = w + l
-            if deck1 == deck2:
-                continue
-            elif extra_match_counts.get(deck2, {}).get(deck1, 0) == n:
-                print('SKIPPING {} vs. {}, already processed in reverse order'.format(deck2, deck1))
-                continue
-            extra_match_counts[deck1] = extra_match_counts.get(deck1, {})
-            extra_match_counts[deck1][deck2] = extra_match_counts[deck1].get(deck2, 0) + n
-            extra_match_wins[deck1] = extra_match_wins.get(deck1, {})
-            extra_match_wins[deck1][deck2] = extra_match_wins[deck1].get(deck2, 0) + w
-    archetypes = list(archetype_totals.keys())
-    archetypes.sort(key=lambda x: 1 if x == 'Misc.' else -(archetype_totals[x]+deck_counts.get(x, 0)))
-    if selection.isdigit():
-        n = min(int(selection), len(archetypes)-1)
-    else:
-        archetypes = [selection] + [a for a in archetypes if a != selection]
-        n = 1
-    pairing_counts = []
-    score_counts = []
-    record_counts = []
-    for i in range((2*n_rounds)+1):
-        oppscore_distribution = []
-        score = i - n_rounds
-        for j in range((2*n_rounds)+1):
-            oppscore = j - n_rounds
-            oppscore_distribution.append(score_pairings.get(oppscore, {}).get(score, 0))
-        score_counts.append(oppscore_distribution)
-    for n_matches in range(n_rounds+1):
-        for l in range(n_matches+1):
-            w = n_matches - l
-            deck_distribution = []
-            paired_deck_distribution = []
-            for deck in archetypes:
-                deck_distribution.append(archetype_records[deck].get((w, l), 0))
-                paired_deck_distribution.append(archetype_pairings[deck].get((w, l), 0))
-            record_counts.append(deck_distribution)
-            pairing_counts.append(paired_deck_distribution)
-    archetype_counts = [archetype_totals[x] for x in archetypes]
-    archetype_proportions = [archetype_counts[i] / float(sum(archetype_counts)) for i in range(n)]
-    archetype_proportions.append(1.0 - sum(archetype_proportions))
-    fully_specified_data = {
-        'n_archetypes': len(archetypes),
-        'n_rounds': n_rounds,
-        'paired_scores': score_counts,
-        'pairing_counts': pairing_counts,
-        'record_counts': record_counts,
-        'deck_counts': [deck_counts.get(x, 0) for x in archetypes],
-        'win_counts': [win_counts.get(x, 0) for x in archetypes],
-        'loss_counts': [loss_counts.get(x, 0) for x in archetypes],
-        'matchup_counts': np.array([[extra_match_counts.get(x, {}).get(y, 0) for y in archetypes] for x in archetypes], dtype=np.float64),
-        'matchup_wins': np.array([[extra_match_wins.get(x, {}).get(y, 0) for y in archetypes] for x in archetypes], dtype=np.float64)
-    }
-    archetype_list = archetypes[:n] + ["Misc."]
-    consolidated_data = consolidate(fully_specified_data, n)
-    consolidated_data['archetypes'] = archetype_list
-    consolidated_data['obs_proportion'] = archetype_proportions
-    print("Loaded data:")
-    for key in consolidated_data:
-        print("\t", key, consolidated_data[key])
-    return consolidated_data, archetype_list
+                    self.substitutions[row[1].strip()] = row[0].strip()
+        self.substitutions['Rogue'] = self.substitutions.get('Rogue', 'Misc.')
+        self.substitutions['Unknown'] = self.substitutions.get('Unknown', 'Misc.')
 
+    def load_league_pairings(self, league_data_file):
+        with open(league_data_file) as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                w = int(row['w']) if len(row.get('w', '')) > 0 else None
+                l = int(row['l']) if len(row.get('l', '')) > 0 else None
+                opponent = row.get('Opposing Deck', row.get('deck', ''))
+                opponent = self.substitutions.get(opponent, opponent)
+                if w is None or l is None or len(opponent) == 0:
+                    print('SKIPPING ROW: {}'.format(row))
+                    continue
+                opp_w = int(row['opp_w']) if len(row.get('opp_w', '')) > 0 else None
+                opp_l = int(row['opp_l']) if len(row.get('opp_l', '')) > 0 else None
+                score = w-l
+                self.n_rounds = max(self.n_rounds, w+l)
+                self.archetype_totals[opponent] = self.archetype_totals.get(opponent, 0) + 1
+                if opponent not in self.archetype_pairings:
+                    self.archetype_pairings[opponent] = {}
+                if opponent not in self.archetype_records:
+                    self.archetype_records[opponent] = {}
+                if opp_w is not None and opp_l is not None:
+                    opp_record = (opp_w, opp_l)
+                    opp_score = opp_w - opp_l
+                    if opp_score not in self.score_pairings:
+                        self.score_pairings[opp_score] = {}
+                    self.archetype_records[opponent][opp_record] = self.archetype_records[opponent].get(opp_record, 0) + 1
+                    self.score_pairings[opp_score][score] = self.score_pairings[opp_score].get(score, 0) + 1
+                else:
+                    record = (w, l)
+                    self.archetype_pairings[opponent][record] = self.archetype_pairings[opponent].get(record, 0) + 1
+    def load_final_records(self, record_data_file):
+        with open(record_data_file) as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                w = int(row['w']) if len(row.get('w', '')) > 0 else None
+                l = int(row['l']) if len(row.get('l', '')) > 0 else None
+                deck = row.get('deck', '')
+                deck = self.substitutions.get(deck, deck)
+                if w is None or l is None or len(deck) == 0:
+                    print('SKIPPING ROW: {}'.format(row))
+                    continue
+                self.archetype_totals[deck] = self.archetype_totals.get(deck, 0)
+                self.archetype_pairings[deck] = self.archetype_pairings.get(deck, {})
+                self.archetype_records[deck] = self.archetype_records.get(deck, {})
+                self.deck_counts[deck] = self.deck_counts.get(deck, 0) + 1
+                self.win_counts[deck] = self.win_counts.get(deck, 0) + w
+                self.loss_counts[deck] = self.loss_counts.get(deck, 0) + l
 
-def consolidate(data, n):
-    transformed = {
-        'n_archetypes': n+1,
-        'n_rounds': data['n_rounds'],
-        'paired_scores': data['paired_scores'],
-        'pairing_counts': [],
-        'record_counts': []
-    }
-    for r_i in range(len(data['record_counts'])):
-        for key in {'pairing_counts', 'record_counts'}:
-            new_list = [data[key][r_i][j] for j in range(n)]
-            total = sum([data[key][r_i][j] for j in range(n, len(data[key][r_i]))])
-            new_list.append(total)
-            transformed[key].append(new_list)
-        for key in {'deck_counts', 'win_counts', 'loss_counts'}:
-            new_list = [data[key][j] for j in range(n)]
-            total = sum([data[key][j] for j in range(n, len(data[key]))])
-            new_list.append(total)
-            transformed[key] = new_list
-    for key in {'matchup_counts', 'matchup_wins'}:
-        temp_counts = []
-        for i in range(len(data[key])):
-            old_counts = data[key][i]
-            new_counts = [data[key][i][j] for j in range(n)]
-            total = sum([data[key][i][j] for j in range(n, len(old_counts))])
-            new_counts.append(total)
-            temp_counts.append(new_counts)
-        transformed_counts = [temp_counts[i] for i in range(n)]
-        n_misc = len(data[key])
-        misc_counts = [sum([temp_counts[i][j] for i in range(n, n_misc)]) for j in range(n+1)]
-        transformed_counts.append(misc_counts)
-        transformed[key] = np.array(transformed_counts, dtype=np.float32)
-    return transformed
+    def load_matchup_data(self, matchup_file):
+        with open(matchup_file) as csvfile:
+            reader = csv.DictReader(csvfile)
+            for row in reader:
+                deck1 = row.get('deck 1', row.get('deck', row.get('archetype', row.get('archetype 1', ''))))
+                deck1 = self.substitutions.get(deck1, deck1)
+                deck2 = row.get('deck 2', row.get('opp_deck', row.get('opp_archetype', row.get('archetype 2', ''))))
+                deck2 = self.substitutions.get(deck2, deck2)
+                w = int(row['w']) if len(row.get('w', '')) > 0 else None
+                l = int(row['l']) if len(row.get('l', '')) > 0 else None
+                n = int(row['total']) if len(row.get('total', '')) > 0 else None
+                if w is None or (l is None and n is None):
+                    print('SKIPPING ROW: {}'.format(row))
+                    continue
+                if n is None:
+                    n = w + l
+                if deck1 == deck2:
+                    continue
+                elif self.extra_match_counts.get(deck2, {}).get(deck1, 0) == n:
+                    print('SKIPPING {} vs. {}, already processed in reverse order'.format(deck2, deck1))
+                    continue
+                self.extra_match_counts[deck1] = self.extra_match_counts.get(deck1, {})
+                self.extra_match_counts[deck1][deck2] = self.extra_match_counts[deck1].get(deck2, 0) + n
+                self.extra_match_wins[deck1] = self.extra_match_wins.get(deck1, {})
+                self.extra_match_wins[deck1][deck2] = self.extra_match_wins[deck1].get(deck2, 0) + w
+
+    def gather_data(self, selection):
+        archetypes = list(self.archetype_totals.keys())
+        archetypes.sort(key=lambda x: 1 if x == 'Misc.' else -(self.archetype_totals[x]+self.deck_counts.get(x, 0)))
+        if selection.isdigit():
+            n = min(int(selection), len(archetypes)-1)
+        else:
+            archetypes = [selection] + [a for a in archetypes if a != selection]
+            n = 1
+        pairing_counts = []
+        score_counts = []
+        record_counts = []
+        for i in range((2*self.n_rounds)+1):
+            oppscore_distribution = []
+            score = i - self.n_rounds
+            for j in range((2*self.n_rounds)+1):
+                oppscore = j - self.n_rounds
+                oppscore_distribution.append(self.score_pairings.get(oppscore, {}).get(score, 0))
+            score_counts.append(oppscore_distribution)
+        for n_matches in range(self.n_rounds+1):
+            for l in range(n_matches+1):
+                w = n_matches - l
+                deck_distribution = []
+                paired_deck_distribution = []
+                for deck in archetypes:
+                    deck_distribution.append(self.archetype_records[deck].get((w, l), 0))
+                    paired_deck_distribution.append(self.archetype_pairings[deck].get((w, l), 0))
+                record_counts.append(deck_distribution)
+                pairing_counts.append(paired_deck_distribution)
+        archetype_counts = [self.archetype_totals[x] for x in archetypes]
+        archetype_proportions = [archetype_counts[i] / float(sum(archetype_counts)) for i in range(n)]
+        archetype_proportions.append(1.0 - sum(archetype_proportions))
+        fully_specified_data = {
+            'n_archetypes': len(archetypes),
+            'n_rounds': self.n_rounds,
+            'paired_scores': score_counts,
+            'pairing_counts': pairing_counts,
+            'record_counts': record_counts,
+            'deck_counts': [self.deck_counts.get(x, 0) for x in archetypes],
+            'win_counts': [self.win_counts.get(x, 0) for x in archetypes],
+            'loss_counts': [self.loss_counts.get(x, 0) for x in archetypes],
+            'matchup_counts': np.array([[self.extra_match_counts.get(x, {}).get(y, 0) for y in archetypes] for x in archetypes], dtype=np.float64),
+            'matchup_wins': np.array([[self.extra_match_wins.get(x, {}).get(y, 0) for y in archetypes] for x in archetypes], dtype=np.float64)
+        }
+        archetype_list = archetypes[:n] + ["Misc."]
+        consolidated_data = self.consolidate(fully_specified_data, n)
+        consolidated_data['archetypes'] = archetype_list
+        consolidated_data['obs_proportion'] = archetype_proportions
+        print("Loaded data:")
+        for key in consolidated_data:
+            print("\t", key, consolidated_data[key])
+        return consolidated_data, archetype_list
+
+    def consolidate(self, data, n):
+        transformed = {
+            'n_archetypes': n+1,
+            'n_rounds': data['n_rounds'],
+            'paired_scores': data['paired_scores'],
+            'pairing_counts': [],
+            'record_counts': []
+        }
+        for r_i in range(len(data['record_counts'])):
+            for key in {'pairing_counts', 'record_counts'}:
+                new_list = [data[key][r_i][j] for j in range(n)]
+                total = sum([data[key][r_i][j] for j in range(n, len(data[key][r_i]))])
+                new_list.append(total)
+                transformed[key].append(new_list)
+            for key in {'deck_counts', 'win_counts', 'loss_counts'}:
+                new_list = [data[key][j] for j in range(n)]
+                total = sum([data[key][j] for j in range(n, len(data[key]))])
+                new_list.append(total)
+                transformed[key] = new_list
+        for key in {'matchup_counts', 'matchup_wins'}:
+            temp_counts = []
+            for i in range(len(data[key])):
+                old_counts = data[key][i]
+                new_counts = [data[key][i][j] for j in range(n)]
+                total = sum([data[key][i][j] for j in range(n, len(old_counts))])
+                new_counts.append(total)
+                temp_counts.append(new_counts)
+            transformed_counts = [temp_counts[i] for i in range(n)]
+            n_misc = len(data[key])
+            misc_counts = [sum([temp_counts[i][j] for i in range(n, n_misc)]) for j in range(n+1)]
+            transformed_counts.append(misc_counts)
+            transformed[key] = np.array(transformed_counts, dtype=np.float32)
+        return transformed
 
 
 if __name__ == "__main__":
-    if len(sys.argv) == 2:
-        load_results(sys.argv[1])
-    elif len(sys.argv) == 3:
-        load_results(sys.argv[1], sys.argv[2])
-    elif len(sys.argv) >= 4:
-        league_input_file = sys.argv[1]
-        record_input_file = sys.argv[2]
-        deck_selection = sys.argv[3]
-        out_dir = sys.argv[4] if len(sys.argv) >= 5 else None
-        matchup_file = sys.argv[5] if len(sys.argv) >= 6 else None
-        substitution_file = sys.argv[6] if len(sys.argv) >= 7 else None
-        plot_dir = sys.argv[7] if len(sys.argv) >= 8 else None
+    if len(sys.argv) > -1:
+        parser = argparse.ArgumentParser(description='Run Bayesian inference over MTGO data.')
+        parser.add_argument('-s', '--substitutions', action='store', nargs='+', default=[],
+                            help='CSV file(s) containing name substitutions: each row should be'
+                            ' "to,from" where "from" is replaced with "to" before processing.',
+                            metavar='filename')
+        parser.add_argument('-m', '--matchup-data', action='store', nargs='+', default=[],
+                            help='CSV file(s) containing matchup data: expects columns'
+                            ' for deck one ("deck 1", "deck", "archetype 1", or "archetype"),'
+                            ' deck two ("deck 2", "opp_deck", "archetype 2", or "opp_archetype"),'
+                            ' games won by deck one ("w"),'
+                            ' and games lost by deck one/won by deck two ("l")',
+                            metavar='filename')
+        parser.add_argument('-l', '--league-pairings', action='store', nargs='+', default=[],
+                            help='CSV file(s) containing MTGO league pairing counts',
+                            metavar='filename')
+        parser.add_argument('-r', '--final-records', action='store', nargs='+', default=[],
+                            help='CSV file(s) containing final tournament records',
+                            metavar='filename')
+        parser.add_argument('-d', '--decks', action='store', default='9',
+                            help='Either the maximum number of individual decks to consider at once;'
+                            ' or a single deck name to consider only one discrete deck. In either'
+                            ' case, all other decks will be consolidated into a catch-all category.')
+        parser.add_argument('-o', '--output-dir', action='store', default=None,
+                            help='Directory to which to save the trace of the run.')
+        parser.add_argument('-p', '--plot-dir', action='store', default=None,
+                            help='Directory to which to save plots.')
+        arguments = parser.parse_args(sys.argv[1:])
 
-        data, labels = load_data(league_input_file, record_input_file, deck_selection, substitution_file, matchup_file)
+        input_data = InputData()
+        for substitution_file in arguments.substitutions:
+            input_data.load_substitutions(substitution_file)
+        for league_data_file in arguments.league_pairings:
+            input_data.load_league_pairings(league_data_file)
+        for record_data_file in arguments.final_records:
+            input_data.load_final_records(record_data_file)
+        for matchup_data_file in arguments.matchup_data:
+            input_data.load_matchup_data(matchup_data_file)
+
+        data, labels = input_data.gather_data(arguments.decks)
+
         sess = tf.Session()
         n_samples = 21000
         burn_in = 1000
         t_model, results = run_league_inference(sess, data,
                                                 num_samples=n_samples, sample_interval=0,
                                                 burn_in=burn_in, num_chains=4)
-        process_results(sess, results, labels, burn_in, out_dir, False, plot_dir=plot_dir)
+        process_results(sess, results, labels, burn_in, arguments.output_dir, False, plot_dir=arguments.plot_dir)
     else:
+        print('Running example...')
         run_example()
-
