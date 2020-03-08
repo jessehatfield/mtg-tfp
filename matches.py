@@ -3,6 +3,7 @@
 import tensorflow as tf
 import tensorflow_probability as tfp
 
+from math import ceil
 import numpy as np
 
 import csv
@@ -79,29 +80,15 @@ def summarize_run(mcmc_results, archetype_labels, burn_in):
     flat_field = plots.reduce_dimension(mcmc_results["field"][burn_in:, :, :], 2)
     field_summary = np.vstack([np.mean(flat_field, axis=0, keepdims=True),
                                np.std(flat_field, axis=0, keepdims=True),
-                               np.nanpercentile(flat_field, [2.5, 25, 50, 75, 97.5], axis=0)]).transpose()
-    print(f"\t{'Archetype':20}{'Mean':>10}{'Std.Dev':>10}{'2.5%':>10}{'25%':>10}{'50%':>10}{'75%':>10}{'97.5%':>10}")
-    for i in range(len(archetype_labels)):
-        stats = ("{:10f}" * len(field_summary[i])).format(*field_summary[i])
-        print(f"\t{archetype_labels[i]:20}{stats}")
-    print("EV stats:")
-    flat_ev = plots.reduce_dimension(mcmc_results["ev"][burn_in:, :, :], 2)
-    ev_summary = np.vstack([np.mean(flat_ev, axis=0, keepdims=True),
-                            np.std(flat_ev, axis=0, keepdims=True),
-                            np.nanpercentile(flat_ev, [2.5, 25, 50, 75, 97.5], axis=0)]).transpose()
-    print(f"\t{'Archetype':20}{'Mean':>10}{'Std.Dev':>10}{'2.5%':>10}{'25%':>10}{'50%':>10}{'75%':>10}{'97.5%':>10}")
-    for i in range(len(archetype_labels)):
-        stats = ("{:10f}" * len(ev_summary[i])).format(*ev_summary[i])
-        print(f"\t{archetype_labels[i]:20}{stats}")
-
+                               np.nanpercentile(flat_field, [5, 25, 50, 75, 95], axis=0)]).transpose()
+    print(f"\t{'Archetype':20}{'Mean':>10}{'Std.Dev':>10}{'5%':>10}{'25%':>10}{'50%':>10}{'75%':>10}{'95%':>10}")
     flat_matchups = plots.reduce_dimension(mcmc_results["matchup_matrix"][burn_in:, :, :, :], 3)
     fixed_ev = np.matmul(flat_matchups, np.expand_dims(flat_field, -1))[:, :, 0]
-    print(fixed_ev.shape)
     ev_summary = np.vstack([np.mean(fixed_ev, axis=0, keepdims=True),
                             np.std(fixed_ev, axis=0, keepdims=True),
-                            np.nanpercentile(fixed_ev, [2.5, 25, 50, 75, 97.5], axis=0)]).transpose()
-    print("EV stats (fixed):")
-    print(f"\t{'Archetype':20}{'Mean':>10}{'Std.Dev':>10}{'2.5%':>10}{'25%':>10}{'50%':>10}{'75%':>10}{'97.5%':>10}")
+                            np.nanpercentile(fixed_ev, [5, 25, 50, 75, 95], axis=0)]).transpose()
+    print("EV stats (method 2):")
+    print(f"\t{'Archetype':20}{'Mean':>10}{'Std.Dev':>10}{'5%':>10}{'25%':>10}{'50%':>10}{'75%':>10}{'95%':>10}")
     for i in range(len(archetype_labels)):
         stats = ("{:10f}" * len(ev_summary[i])).format(*ev_summary[i])
         print(f"\t{archetype_labels[i]:20}{stats}")
@@ -131,13 +118,15 @@ def plot_traces(mcmc_results, archetype_labels, out_dir=None):
 
 def plot_posteriors(mcmc_results, archetype_labels, burn_in, out_dir=None):
 #    plots.matchup_matrix_posterior(mcmc_results["score_matrix"])
-    plots.constant_posterior(mcmc_results["wait_time"][burn_in:, :, :], "Posterior Wait Time",
+    n = len(mcmc_results["wait_time"])
+    interval = int(ceil((n-burn_in) / 500.0))
+    plots.constant_posterior(mcmc_results["wait_time"][burn_in::interval, :, :], "Posterior Wait Time",
                              filename=None if out_dir is None else f"{out_dir}/wait_time.png")
-    plots.field_posterior(mcmc_results["field"][burn_in:, :, :], xlabel="Posterior Field Proportion",
+    plots.field_posterior(mcmc_results["field"][burn_in::interval, :, :], xlabel="Posterior Field Proportion",
                           dist_labels=archetype_labels,
                           filename=None if out_dir is None else f"{out_dir}/field.png")
-    plots.matchup_matrix_posterior(mcmc_results["matchup_matrix"][burn_in:, :, :, :],
-                                   ev=mcmc_results["ev"][burn_in:, :, :],
+    plots.matchup_matrix_posterior(mcmc_results["matchup_matrix"][burn_in::interval, :, :, :],
+                                   ev=mcmc_results["ev"][burn_in::interval, :, :],
                                    title="Posterior Matchup Matrix",
                                    archetypes=archetype_labels,
                                    filename=None if out_dir is None else f"{out_dir}/matchups.png")
@@ -412,7 +401,7 @@ if __name__ == "__main__":
 
         data, labels = load_data(league_input_file, record_input_file, deck_selection, substitution_file, matchup_file)
         sess = tf.Session()
-        n_samples = 50100
+        n_samples = 21000
         burn_in = 1000
         t_model, results = run_league_inference(sess, data,
                                                 num_samples=n_samples, sample_interval=0,
