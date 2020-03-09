@@ -1,0 +1,528 @@
+Script started on 2020-03-09 00:19:54-04:00
+]777;notify;Command completed;./matches.py -l 2020-02/combined_league.csv -r 2020-02/mtgo_records.csv -m 2020-02/gp_bologna_matchups.csv -s 2020-02/substitutions.csv -d 8 -o 2020-02/output6 -p 2020-02/output6/plots]0;jhatfiel@centos:~/src/mtg-tfp]7;file://centos/home/jhatfiel/src/mtg-tfp(base) [jhatfiel@centos mtg-tfp]$ ./matches.py -l 2020-02/combined_league.csv -r 2020-02/mtgo_records.csv -m 2020-02/gp_bologna_matchups.csv -s 2020-02/substitutions.csv -d 8 -n 20000 -b 1000 -c 5 -i 1 -o 2020-02/prebr -p 2020-02/prebr/ploots
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:516: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:517: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:518: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:519: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:520: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:525: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:541: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:542: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:543: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:544: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:545: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:550: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+['Delver', 'Breach', 'Control', 'Cloudpost', 'Show and Tell', 'Storm', 'Chalice Stompy', 'Death and Taxes', 'Reanimator', 'Elves', '4C Loam', 'Lands', "Death's Shadow", 'Maverick', 'Mono-Red Prison', 'Hogaak', 'Depths', 'Dredge', 'Infect', 'Esper Hatebears', 'Goblins', 'BUG Zenith Oko', 'BUG Doomsday', 'Stryfo Pile', 'Painter', 'Urza ThopterSword', 'Burn', 'BUG', 'Belcher', 'Turbo Depths', 'BUG Control', 'Humans', 'Jund', 'Ninjas', 'Aluren', 'Echo Storm', 'Selesnya Depths', 'Enchantress', 'Pox', 'Esper Mentor', 'High Tide', '4c Black', 'BUG Zenith', 'Oops', 'Simic Titan', 'Artifact Echo', 'Oko Chalice Midrange', 'Grixis Control', 'Bant Maverick', 'Landstill', 'Manaless Dredge', 'Esper Stoneblade', 'UW Stoneblade', 'Merfolk', 'BUG Stompy', 'Stax', 'Amulet', 'Esper Vial', 'Bomberman', 'Snow Food', 'Slivers', 'Mono Red Eldrazi', 'RUG Food Chain', 'Bant Snowblade', 'B', 'BUG Loam Pox', 'Oracle Thought Lash Combo', 'U/W Hexproof', 'Niv-Mizzet', 'Rogues', 'UBG', 'Misc.']
+Loaded data:
+	 n_archetypes 9
+	 n_rounds 4
+	 paired_scores [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+	 pairing_counts [[9, 6, 5, 2, 4, 6, 4, 6, 30], [10, 3, 6, 1, 5, 3, 3, 2, 19], [3, 3, 4, 0, 1, 1, 1, 1, 7], [4, 3, 6, 1, 1, 1, 3, 2, 21], [7, 2, 5, 1, 0, 0, 0, 1, 5], [0, 0, 0, 0, 1, 0, 0, 0, 2], [5, 2, 5, 0, 3, 0, 3, 1, 13], [2, 1, 0, 0, 1, 0, 0, 1, 16], [4, 1, 0, 1, 0, 0, 0, 1, 4], [0, 0, 0, 0, 0, 0, 0, 0, 0], [7, 5, 2, 2, 0, 0, 2, 0, 7], [2, 2, 4, 0, 2, 1, 1, 0, 7], [4, 0, 2, 0, 1, 0, 0, 1, 7], [1, 0, 1, 0, 0, 1, 0, 0, 1], [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+	 record_counts [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+	 deck_counts [71, 64, 34, 31, 15, 19, 15, 15, 163]
+	 win_counts [273, 269, 137, 121, 62, 77, 55, 60, 681]
+	 loss_counts [128, 94, 55, 57, 28, 26, 26, 27, 279]
+	 matchup_counts [[0.000e+00 0.000e+00 1.370e+02 4.100e+01 1.140e+02 1.010e+02 5.900e+01
+  1.270e+02 9.610e+02]
+ [0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00 0.000e+00
+  0.000e+00 0.000e+00]
+ [1.370e+02 0.000e+00 0.000e+00 1.800e+01 5.100e+01 4.300e+01 2.100e+01
+  4.600e+01 2.440e+02]
+ [4.100e+01 0.000e+00 1.800e+01 0.000e+00 2.000e+01 9.000e+00 6.000e+00
+  8.000e+00 1.040e+02]
+ [1.140e+02 0.000e+00 5.100e+01 2.000e+01 0.000e+00 3.500e+01 1.200e+01
+  3.800e+01 2.310e+02]
+ [1.010e+02 0.000e+00 4.300e+01 1.000e+01 3.500e+01 0.000e+00 1.200e+01
+  1.700e+01 2.420e+02]
+ [4.400e+01 0.000e+00 2.100e+01 6.000e+00 1.200e+01 1.000e+00 0.000e+00
+  0.000e+00 8.400e+01]
+ [9.200e+01 0.000e+00 4.600e+01 0.000e+00 3.800e+01 1.000e+01 1.600e+01
+  0.000e+00 2.270e+02]
+ [8.690e+02 0.000e+00 2.710e+02 8.100e+01 2.550e+02 5.600e+01 4.300e+01
+  5.200e+01 1.107e+03]]
+	 matchup_wins [[  0.   0.  55.  23.  76.  55.  24.  59. 504.]
+ [  0.   0.   0.   0.   0.   0.   0.   0.   0.]
+ [ 82.   0.   0.   7.  28.  20.  10.  18. 130.]
+ [ 18.   0.  11.   0.  11.   4.   5.   6.  54.]
+ [ 38.   0.  23.   9.   0.  19.   5.  22. 125.]
+ [ 46.   0.  23.   5.  16.   0.   6.  10. 102.]
+ [ 28.   0.  11.   1.   7.   1.   0.   0.  46.]
+ [ 51.   0.  28.   0.  16.   2.  10.   0. 115.]
+ [412.   0. 127.  45. 116.  33.  16.  33. 563.]]
+	 archetypes ['Delver', 'Breach', 'Control', 'Cloudpost', 'Show and Tell', 'Storm', 'Chalice Stompy', 'Death and Taxes', 'Misc.']
+	 obs_proportion [0.17159763313609466, 0.08284023668639054, 0.11834319526627218, 0.023668639053254437, 0.05621301775147929, 0.038461538461538464, 0.05029585798816568, 0.047337278106508875, 0.41124260355029585]
+2020-03-09 00:20:02.891930: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 3991395000 Hz
+2020-03-09 00:20:02.892414: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55ccc62d6510 executing computations on platform Host. Devices:
+2020-03-09 00:20:02.892460: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
+----Running MCMC----
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow_probability/python/mcmc/internal/util.py:494: UserWarning: `step_size` is not a `tf.Tensor`, Python number, or Numpy array. If this parameter is mutable (e.g., a `tf.Variable`), then the behavior implied by `store_parameters_in_results` will silently change on 2019-08-01. Please consult the docstring for `store_parameters_in_results` details and use `store_parameters_in_results=True` to silence this warning.
+  param_name))
+WARNING: Logging before flag parsing goes to stderr.
+W0309 00:20:03.185944 140353825691456 deprecation.py:323] From /home/jhatfiel/src/mtg-tfp/generate.py:39: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+2020-03-09 00:20:14.625764: W tensorflow/compiler/jit/mark_for_compilation_pass.cc:1412] (One-time warning): Not using XLA:CPU for cluster because envvar TF_XLA_FLAGS=--tf_xla_cpu_global_jit was not set.  If you want XLA:CPU, either set that envvar, or use experimental_jit_scope to enable XLA:CPU.  To confirm that XLA is active, pass --vmodule=xla_compilation_cache=1 (as a proper command-line flag, not via TF_XLA_FLAGS) or set the envvar XLA_FLAGS=--xla_hlo_profile.
+Acceptance rate: 0.7036
+Final step size: 0.06857437640428543
+M == 
+	[[[0.5        0.3897427  0.4097765  0.5360623  0.65167505 0.5333346
+	   0.41298407 0.46268773 0.5210307 ]
+	  [0.61025715 0.5        0.5625368  0.5040514  0.5490576  0.50776434
+	   0.5530132  0.5347725  0.6073753 ]
+	  [0.5902233  0.4374642  0.5        0.42184737 0.54086775 0.4668218
+	   0.49036738 0.4149579  0.5227963 ]
+	  [0.46393818 0.49594882 0.57815474 0.5        0.5400259  0.48562002
+	   0.6264336  0.5605297  0.492325  ]
+	  [0.34832513 0.45094252 0.4591332  0.45997384 0.5        0.52773523
+	   0.4595772  0.5584764  0.53702176]
+	  [0.46666557 0.49223515 0.5331784  0.5143807  0.47226402 0.5
+	   0.49296704 0.5933524  0.4279825 ]
+	  [0.58701754 0.4469859  0.5096318  0.3735697  0.5404232  0.5070334
+	   0.5        0.44805267 0.5413519 ]
+	  [0.5373112  0.46522573 0.5850405  0.43947133 0.44152236 0.406648
+	   0.5519486  0.5        0.47277334]
+	  [0.47897002 0.39262193 0.47720382 0.5076749  0.46298063 0.57201827
+	   0.4586497  0.5272247  0.5       ]]
+	
+	 [[0.5        0.38414758 0.41031918 0.5365892  0.6517348  0.5341782
+	   0.41320133 0.4626418  0.5212104 ]
+	  [0.61584973 0.5        0.56719553 0.50228995 0.5490224  0.50452864
+	   0.5341353  0.5423937  0.60194063]
+	  [0.5896811  0.43280375 0.5        0.4211259  0.53956014 0.46615064
+	   0.48952603 0.41523424 0.52290696]
+	  [0.4634103  0.4977104  0.5788751  0.5        0.5352263  0.4861627
+	   0.6203862  0.5791482  0.49143857]
+	  [0.34826478 0.4509763  0.4604394  0.46477276 0.5        0.5292635
+	   0.46024707 0.5614472  0.536598  ]
+	  [0.46582046 0.49547118 0.53384924 0.51383674 0.47073594 0.5
+	   0.50821096 0.5952282  0.42857045]
+	  [0.5867989  0.46586308 0.51047415 0.37961292 0.5397526  0.4917895
+	   0.5        0.4429029  0.54408294]
+	  [0.5373585  0.45760497 0.5847675  0.42085043 0.43855405 0.40477222
+	   0.55709815 0.5        0.4728959 ]
+	  [0.47879007 0.3980617  0.47709224 0.5085616  0.4634027  0.57142735
+	   0.45591548 0.5271051  0.5       ]]
+	
+	 [[0.5        0.39919096 0.41082495 0.5363541  0.6508316  0.53310806
+	   0.41483325 0.46208638 0.5211935 ]
+	  [0.60080963 0.5        0.5590268  0.5025926  0.53657925 0.49518237
+	   0.5549826  0.54235166 0.61323845]
+	  [0.5891741  0.44097412 0.5        0.42346293 0.5436072  0.46638036
+	   0.48710284 0.41595817 0.5225859 ]
+	  [0.46364698 0.49740732 0.57653815 0.5        0.53907436 0.48669952
+	   0.6200219  0.58093226 0.4914956 ]
+	  [0.34917128 0.4634193  0.45639277 0.46092582 0.5        0.5283206
+	   0.456054   0.56090647 0.53662753]
+	  [0.46689257 0.5048181  0.5336186  0.51330036 0.47167808 0.5
+	   0.49996236 0.5995337  0.42810795]
+	  [0.5851669  0.44501793 0.51289773 0.37997794 0.5439466  0.50003767
+	   0.5        0.44637817 0.54299825]
+	  [0.53791344 0.45764628 0.5840429  0.41906723 0.43909585 0.40046483
+	   0.5536245  0.5        0.47274414]
+	  [0.47880605 0.3867654  0.47741508 0.50850374 0.46337333 0.57189333
+	   0.45700103 0.5272557  0.5       ]]
+	
+	 [[0.5        0.39929208 0.40980753 0.5340215  0.6513034  0.53541535
+	   0.41301373 0.4625517  0.52112263]
+	  [0.6007079  0.5        0.5680605  0.49575356 0.5238281  0.5075834
+	   0.5289413  0.5416874  0.6149224 ]
+	  [0.59019214 0.4319395  0.5        0.4235573  0.5397658  0.46587613
+	   0.48838297 0.41801447 0.5228013 ]
+	  [0.46597916 0.5042464  0.57644236 0.5        0.5397027  0.48698843
+	   0.6270966  0.57242626 0.49258476]
+	  [0.3486977  0.47617218 0.460235   0.46029708 0.5        0.5259914
+	   0.46485126 0.5592167  0.5367475 ]
+	  [0.4645843  0.49241635 0.5341234  0.5130118  0.47400904 0.5
+	   0.4959482  0.5948396  0.42756525]
+	  [0.5869831  0.4710585  0.51161754 0.37290388 0.53514814 0.5040518
+	   0.5        0.44995674 0.54299843]
+	  [0.5374487  0.45831305 0.58198386 0.42757592 0.44078174 0.40516204
+	   0.55004257 0.5        0.47205946]
+	  [0.47887596 0.3850741  0.47719884 0.5074159  0.46325186 0.5724349
+	   0.45700112 0.52794075 0.5       ]]
+	
+	 [[0.5        0.3973513  0.4097309  0.5360829  0.65111184 0.53388625
+	   0.41198877 0.46241748 0.5211423 ]
+	  [0.60265064 0.5        0.5640328  0.5098833  0.547991   0.50290453
+	   0.5268053  0.5371868  0.61634296]
+	  [0.59026885 0.4359669  0.5        0.42188525 0.5369438  0.46805182
+	   0.49015138 0.41275385 0.5224636 ]
+	  [0.4639163  0.49011597 0.5781161  0.5        0.5377158  0.49364585
+	   0.6254298  0.573932   0.49328458]
+	  [0.34888685 0.4520085  0.46305844 0.46228334 0.5        0.52672255
+	   0.46051538 0.5603418  0.53713405]
+	  [0.46611226 0.4970958  0.5319473  0.50635403 0.47327775 0.5
+	   0.49876285 0.59632254 0.4276683 ]
+	  [0.58801126 0.4731951  0.50984925 0.37457183 0.5394842  0.50123733
+	   0.5        0.4514086  0.54242986]
+	  [0.5375814  0.4628145  0.5872455  0.4260676  0.43966025 0.4036757
+	   0.54859143 0.5        0.4732865 ]
+	  [0.4788581  0.3836591  0.4775373  0.50671464 0.46286532 0.57233226
+	   0.4575706  0.5267131  0.5       ]]]
+field==
+	[[0.17001057 0.0987839  0.09490386 0.05121876 0.04718577 0.04722304
+	  0.04079721 0.0428091  0.40706718]
+	 [0.1703856  0.0994994  0.09485725 0.05091932 0.04759372 0.04646749
+	  0.04027994 0.04315832 0.40683976]
+	 [0.16937234 0.09875993 0.09469377 0.05082789 0.04726999 0.04654185
+	  0.04064858 0.04295125 0.40893552]
+	 [0.16945462 0.09894652 0.09480801 0.05059683 0.04693523 0.04712094
+	  0.0401552  0.04348881 0.40849325]
+	 [0.1698189  0.09871788 0.09495617 0.05085186 0.04675017 0.04674634
+	  0.03962083 0.04282965 0.40970963]]
+wait time==
+	[[22.259485]
+	 [14.844214]
+	 [17.947262]
+	 [21.02723 ]
+	 [12.98308 ]]
+score_matrix=
+	[[3.10189188e-01 4.68195602e-02 2.12961272e-03 3.02902714e-04
+	  1.06004758e-04 6.75577176e-05 5.19977511e-05 4.13675662e-05
+	  2.63747897e-05]
+	 [2.56055295e-01 3.99731040e-01 2.44321991e-02 1.68034737e-03
+	  4.46423161e-04 2.73492420e-04 2.15966400e-04 1.88625912e-04
+	  1.56705893e-04]
+	 [2.70998329e-01 3.74556482e-01 7.27099180e-01 3.65273021e-02
+	  4.48103948e-03 2.42322171e-03 1.87462871e-03 1.69657357e-03
+	  1.54736894e-03]
+	 [1.00868195e-01 1.14316016e-01 1.71027288e-01 8.09288323e-01
+	  3.03509161e-02 1.17625147e-02 8.23716074e-03 7.43513089e-03
+	  7.02609681e-03]
+	 [5.03201224e-02 5.35289347e-02 6.38880730e-02 1.36976197e-01
+	  9.28677917e-01 1.36976197e-01 6.38880730e-02 5.35289347e-02
+	  5.03201224e-02]
+	 [7.02609681e-03 7.43513089e-03 8.23716074e-03 1.17625147e-02
+	  3.03509161e-02 8.09288323e-01 1.71027288e-01 1.14316016e-01
+	  1.00868195e-01]
+	 [1.54736894e-03 1.69657357e-03 1.87462871e-03 2.42322171e-03
+	  4.48103948e-03 3.65273021e-02 7.27099180e-01 3.74556482e-01
+	  2.70998329e-01]
+	 [1.56705893e-04 1.88625912e-04 2.15966400e-04 2.73492420e-04
+	  4.46423161e-04 1.68034737e-03 2.44321991e-02 3.99731040e-01
+	  2.56055295e-01]
+	 [2.63747897e-05 4.13675662e-05 5.19977511e-05 6.75577176e-05
+	  1.06004758e-04 3.02902714e-04 2.12961272e-03 4.68195602e-02
+	  3.10189188e-01]]
+Average score pairings:
+	P(opp.score=-4.0 | pl.score=-4.0) == 31.018918752670288%
+	P(opp.score=-3.0 | pl.score=-4.0) == 25.60552954673767%
+	P(opp.score=-2.0 | pl.score=-4.0) == 27.099832892417908%
+	P(opp.score=-1.0 | pl.score=-4.0) == 10.086819529533386%
+	P(opp.score=0.0 | pl.score=-4.0) == 5.032012239098549%
+	P(opp.score=1.0 | pl.score=-4.0) == 0.7026096805930138%
+	P(opp.score=2.0 | pl.score=-4.0) == 0.15473689418286085%
+	P(opp.score=3.0 | pl.score=-4.0) == 0.015670589345972985%
+	P(opp.score=4.0 | pl.score=-4.0) == 0.0026374789740657434%
+	P(opp.score=-4.0 | pl.score=-3.0) == 4.681956022977829%
+	P(opp.score=-3.0 | pl.score=-3.0) == 39.97310400009155%
+	P(opp.score=-2.0 | pl.score=-3.0) == 37.45564818382263%
+	P(opp.score=-1.0 | pl.score=-3.0) == 11.431601643562317%
+	P(opp.score=0.0 | pl.score=-3.0) == 5.3528934717178345%
+	P(opp.score=1.0 | pl.score=-3.0) == 0.7435130886733532%
+	P(opp.score=2.0 | pl.score=-3.0) == 0.1696573570370674%
+	P(opp.score=3.0 | pl.score=-3.0) == 0.01886259124148637%
+	P(opp.score=4.0 | pl.score=-3.0) == 0.004136756615480408%
+	P(opp.score=-4.0 | pl.score=-2.0) == 0.2129612723365426%
+	P(opp.score=-3.0 | pl.score=-2.0) == 2.443219907581806%
+	P(opp.score=-2.0 | pl.score=-2.0) == 72.70991802215576%
+	P(opp.score=-1.0 | pl.score=-2.0) == 17.10272878408432%
+	P(opp.score=0.0 | pl.score=-2.0) == 6.38880729675293%
+	P(opp.score=1.0 | pl.score=-2.0) == 0.8237160742282867%
+	P(opp.score=2.0 | pl.score=-2.0) == 0.1874628709629178%
+	P(opp.score=3.0 | pl.score=-2.0) == 0.021596639999188483%
+	P(opp.score=4.0 | pl.score=-2.0) == 0.005199775114306249%
+	P(opp.score=-4.0 | pl.score=-1.0) == 0.03029027138836682%
+	P(opp.score=-3.0 | pl.score=-1.0) == 0.16803473699837923%
+	P(opp.score=-2.0 | pl.score=-1.0) == 3.6527302116155624%
+	P(opp.score=-1.0 | pl.score=-1.0) == 80.92883229255676%
+	P(opp.score=0.0 | pl.score=-1.0) == 13.69761973619461%
+	P(opp.score=1.0 | pl.score=-1.0) == 1.176251471042633%
+	P(opp.score=2.0 | pl.score=-1.0) == 0.24232217110693455%
+	P(opp.score=3.0 | pl.score=-1.0) == 0.027349242009222507%
+	P(opp.score=4.0 | pl.score=-1.0) == 0.006755771755706519%
+	P(opp.score=-4.0 | pl.score=0.0) == 0.010600475798128173%
+	P(opp.score=-3.0 | pl.score=0.0) == 0.04464231606107205%
+	P(opp.score=-2.0 | pl.score=0.0) == 0.4481039475649595%
+	P(opp.score=-1.0 | pl.score=0.0) == 3.035091608762741%
+	P(opp.score=0.0 | pl.score=0.0) == 92.86779165267944%
+	P(opp.score=1.0 | pl.score=0.0) == 3.035091608762741%
+	P(opp.score=2.0 | pl.score=0.0) == 0.4481039475649595%
+	P(opp.score=3.0 | pl.score=0.0) == 0.04464231606107205%
+	P(opp.score=4.0 | pl.score=0.0) == 0.010600475798128173%
+	P(opp.score=-4.0 | pl.score=1.0) == 0.006755771755706519%
+	P(opp.score=-3.0 | pl.score=1.0) == 0.027349242009222507%
+	P(opp.score=-2.0 | pl.score=1.0) == 0.24232217110693455%
+	P(opp.score=-1.0 | pl.score=1.0) == 1.176251471042633%
+	P(opp.score=0.0 | pl.score=1.0) == 13.69761973619461%
+	P(opp.score=1.0 | pl.score=1.0) == 80.92883229255676%
+	P(opp.score=2.0 | pl.score=1.0) == 3.6527302116155624%
+	P(opp.score=3.0 | pl.score=1.0) == 0.16803473699837923%
+	P(opp.score=4.0 | pl.score=1.0) == 0.03029027138836682%
+	P(opp.score=-4.0 | pl.score=2.0) == 0.005199775114306249%
+	P(opp.score=-3.0 | pl.score=2.0) == 0.021596639999188483%
+	P(opp.score=-2.0 | pl.score=2.0) == 0.1874628709629178%
+	P(opp.score=-1.0 | pl.score=2.0) == 0.8237160742282867%
+	P(opp.score=0.0 | pl.score=2.0) == 6.38880729675293%
+	P(opp.score=1.0 | pl.score=2.0) == 17.10272878408432%
+	P(opp.score=2.0 | pl.score=2.0) == 72.70991802215576%
+	P(opp.score=3.0 | pl.score=2.0) == 2.443219907581806%
+	P(opp.score=4.0 | pl.score=2.0) == 0.2129612723365426%
+	P(opp.score=-4.0 | pl.score=3.0) == 0.004136756615480408%
+	P(opp.score=-3.0 | pl.score=3.0) == 0.01886259124148637%
+	P(opp.score=-2.0 | pl.score=3.0) == 0.1696573570370674%
+	P(opp.score=-1.0 | pl.score=3.0) == 0.7435130886733532%
+	P(opp.score=0.0 | pl.score=3.0) == 5.3528934717178345%
+	P(opp.score=1.0 | pl.score=3.0) == 11.431601643562317%
+	P(opp.score=2.0 | pl.score=3.0) == 37.45564818382263%
+	P(opp.score=3.0 | pl.score=3.0) == 39.97310400009155%
+	P(opp.score=4.0 | pl.score=3.0) == 4.681956022977829%
+	P(opp.score=-4.0 | pl.score=4.0) == 0.0026374789740657434%
+	P(opp.score=-3.0 | pl.score=4.0) == 0.015670589345972985%
+	P(opp.score=-2.0 | pl.score=4.0) == 0.15473689418286085%
+	P(opp.score=-1.0 | pl.score=4.0) == 0.7026096805930138%
+	P(opp.score=0.0 | pl.score=4.0) == 5.032012239098549%
+	P(opp.score=1.0 | pl.score=4.0) == 10.086819529533386%
+	P(opp.score=2.0 | pl.score=4.0) == 27.099832892417908%
+	P(opp.score=3.0 | pl.score=4.0) == 25.60552954673767%
+	P(opp.score=4.0 | pl.score=4.0) == 31.018918752670288%
+Field distribution stats:
+	Archetype                 Mean   Std.Dev        5%       25%       50%       75%       95%
+	Delver                0.169810  0.014656  0.146420  0.159726  0.169461  0.179457  0.194634
+	Breach                0.098942  0.011931  0.080473  0.090596  0.098343  0.106529  0.119533
+	Control               0.094843  0.011229  0.077022  0.087057  0.094418  0.102203  0.113964
+	Cloudpost             0.050883  0.008340  0.037960  0.045071  0.050415  0.056181  0.065376
+	Show and Tell         0.047147  0.008078  0.034823  0.041438  0.046636  0.052278  0.061288
+	Storm                 0.046820  0.008393  0.033967  0.040966  0.046303  0.052102  0.061420
+	Chalice Stompy        0.040300  0.007307  0.029039  0.035173  0.039876  0.044977  0.052971
+	Death and Taxes       0.043047  0.007830  0.030971  0.037595  0.042584  0.048024  0.056633
+	Misc.                 0.408211  0.020313  0.374319  0.394646  0.408354  0.421977  0.441529
+EV stats:
+	Archetype                 Mean   Std.Dev        5%       25%       50%       75%       95%
+	Delver                0.495289  0.010994  0.477418  0.487810  0.495151  0.502535  0.513643
+	Breach                0.576930  0.027354  0.531438  0.558630  0.577183  0.595281  0.621743
+	Control               0.510709  0.014886  0.486437  0.500615  0.510593  0.520737  0.535409
+	Cloudpost             0.507655  0.019422  0.476012  0.494571  0.507611  0.520624  0.539739
+	Show and Tell         0.481923  0.015828  0.455994  0.471106  0.481826  0.492579  0.508187
+	Storm                 0.471313  0.017678  0.442341  0.459298  0.471172  0.483261  0.500678
+	Chalice Stompy        0.522879  0.022160  0.486692  0.507746  0.522751  0.537831  0.559393
+	Death and Taxes       0.490574  0.018183  0.460610  0.478344  0.490551  0.502864  0.520459
+	Misc.                 0.485496  0.007491  0.473657  0.480388  0.485197  0.490316  0.498312
+Computed from 100000 total samples.
+]777;notify;Command completed;./matches.py -l 2020-02/combined_league.csv -r 2020-02/mtgo_records.csv -m 2020-02/gp_bologna_matchups.csv -s 2020-02/substitutions.csv -d 8 -n 20000 -b 1000 -c 5 -i 1 -o 2020-02/prebr -p 2020-02/prebr/plots]0;jhatfiel@centos:~/src/mtg-tfp]7;file://centos/home/jhatfiel/src/mtg-tfp(base) [jhatfiel@centos mtg-tfp]$ l./matches.py -l 2020-02/combined_league.csv -r 2020-02/mtgo_records.csv -m 2020-02/gp_bologna_matchups.csv -s 2020-02/substitutions.csv -d 8 -n 20000 -b 1000 -c 5 -i 1 -o 2020-02/prebr -p 2020-02/prebr/ploots[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[20Po 2020-02/output6 -p 2020-02/output6/plots
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cn 20000 -b 1000 -c 5 -i 1 -o 2020-02/prebr -p 2020-02/prebr/ploots[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cl[K
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cls[K[K[Kmkdir 2020-02/singleton/[K-breach[Kru[K[K
+no-matchups/ output1/     output2/     output3/     output4/     output5/     output6/     plots/       prebr/       singleton/   
+(base) [jhatfiel@centos mtg-tfp]$ mkdir 2020-02/prebr/singleton-breach
+]777;notify;Command completed;mkdir 2020-02/prebr/singleton-breach]0;jhatfiel@centos:~/src/mtg-tfp]7;file://centos/home/jhatfiel/src/mtg-tfp(base) [jhatfiel@centos mtg-tfp]$ mkdir 2020-02/prebr/singleton-breach[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C./matches.py -l 2020-02/combined_league.csv -r 2020-02/mtgo_records.csv -m 2020-02/gp_bologna_matchups.csv -s 2020-02/substitutions.csv -d 8 -n 20000 -b 1000 -c 5 -i 1 -o 2020-02/prebr -p 2020-02/prebr/ploots[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[20Po 2020-02/output6 -p 2020-02/output6/plots
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cn 20000 -b 1000 -c 5 -i 1 -o 2020-02/prebr -p 2020-02/prebr/ploots[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cmkdir 2020-02/prebr/singleton-breach[K
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C./matches.py -l 2020-02/combined_league.csv -r 2020-02/mtgo_records.csv -m 2020-02/gp_bologna_matchups.csv -s 2020-02/substitutions.csv -d 8 -n 20000 -b 1000 -c 5 -i 1 -o 2020-02/prebr -p 2020-02/prebr/ploots[C[K[K[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K
+[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[K[K/si ngleton-breach/[C[K[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C/ -p 2020-02/prebr/singleton-breach[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cs -p 2020-02/prebr/singleton-breach[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ci -p 2020-02/prebr/singleton-breach[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cn -p 2020-02/prebr/singleton-breach[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cg -p 2020-02/prebr/singleton-breach[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cleton-breach/ -p 2020-02/prebr/singleton-breach[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C -p [1P2020-02/prebr/singleton-breach[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C -n 20000 -b 1000 -c 5 -i 1 -o 2020-02/prebr/singleton-breach -p 2[1P020-02/prebr/singleton-breach[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[CB -n 20000 -b 1000 -c 5 -i 1 -o 2020-02/prebr/singleton-breach -p 2020-02/prebr/singleton-breach[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cr -n 20000 -b 1000 -c 5 -i 1 -o 2020-02/prebr/singleton-breach -p 2020-02/prebr/singleton-breach[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ce -n 20000 -b 1000 -c 5 -i 1 -o 2020-02/prebr/singleton-breach -p 2020-02/prebr/singleton-breach[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ca -n 20000 -b 1000 -c 5 -i 1 -o 2020-02/prebr/singleton-breach [1@-[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Cc -n 20000 -b 1000 -c 5 -i 1 -o 2020-02/prebr/singleton-breach[1@ [A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[Ch -n 20000 -b 1000 -c 5 -i 1 -o 2020-02/prebr/singleton-breac[1@h[A[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C[C
+
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:516: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:517: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:518: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:519: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:520: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:525: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:541: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:542: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:543: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:544: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:545: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:550: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+['Delver', 'Breach', 'Control', 'Cloudpost', 'Show and Tell', 'Storm', 'Chalice Stompy', 'Death and Taxes', 'Reanimator', 'Elves', '4C Loam', 'Lands', "Death's Shadow", 'Maverick', 'Mono-Red Prison', 'Hogaak', 'Depths', 'Dredge', 'Infect', 'Esper Hatebears', 'Goblins', 'BUG Zenith Oko', 'BUG Doomsday', 'Stryfo Pile', 'Painter', 'Urza ThopterSword', 'Burn', 'BUG', 'Belcher', 'Turbo Depths', 'BUG Control', 'Humans', 'Jund', 'Ninjas', 'Aluren', 'Echo Storm', 'Selesnya Depths', 'Enchantress', 'Pox', 'Esper Mentor', 'High Tide', '4c Black', 'BUG Zenith', 'Oops', 'Simic Titan', 'Artifact Echo', 'Oko Chalice Midrange', 'Grixis Control', 'Bant Maverick', 'Landstill', 'Manaless Dredge', 'Esper Stoneblade', 'UW Stoneblade', 'Merfolk', 'BUG Stompy', 'Stax', 'Amulet', 'Esper Vial', 'Bomberman', 'Snow Food', 'Slivers', 'Mono Red Eldrazi', 'RUG Food Chain', 'Bant Snowblade', 'B', 'BUG Loam Pox', 'Oracle Thought Lash Combo', 'U/W Hexproof', 'Niv-Mizzet', 'Rogues', 'UBG', 'Misc.']
+Loaded data:
+	 n_archetypes 2
+	 n_rounds 4
+	 paired_scores [[0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0], [0, 0, 0, 0, 0, 0, 0, 0, 0]]
+	 pairing_counts [[6, 66], [3, 49], [3, 18], [3, 39], [2, 19], [0, 3], [2, 30], [1, 20], [1, 10], [0, 0], [5, 20], [2, 17], [0, 15], [0, 4], [0, 0]]
+	 record_counts [[0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0], [0, 0]]
+	 win_counts [269, 1466]
+	 loss_counts [94, 626]
+	 deck_counts [64, 363]
+	 matchup_counts [[   0.    0.]
+ [   0. 6598.]]
+	 matchup_wins [[   0.    0.]
+ [   0. 3310.]]
+	 archetypes ['Breach', 'Misc.']
+	 obs_proportion [0.08284023668639054, 0.9171597633136095]
+2020-03-09 00:30:45.561178: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 3991395000 Hz
+2020-03-09 00:30:45.570563: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x55babe68fda0 executing computations on platform Host. Devices:
+2020-03-09 00:30:45.570594: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
+----Running MCMC----
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow_probability/python/mcmc/internal/util.py:494: UserWarning: `step_size` is not a `tf.Tensor`, Python number, or Numpy array. If this parameter is mutable (e.g., a `tf.Variable`), then the behavior implied by `store_parameters_in_results` will silently change on 2019-08-01. Please consult the docstring for `store_parameters_in_results` details and use `store_parameters_in_results=True` to silence this warning.
+  param_name))
+WARNING: Logging before flag parsing goes to stderr.
+W0309 00:30:45.817506 140331130173248 deprecation.py:323] From /home/jhatfiel/src/mtg-tfp/generate.py:39: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+2020-03-09 00:30:52.225471: W tensorflow/compiler/jit/mark_for_compilation_pass.cc:1412] (One-time warning): Not using XLA:CPU for cluster because envvar TF_XLA_FLAGS=--tf_xla_cpu_global_jit was not set.  If you want XLA:CPU, either set that envvar, or use experimental_jit_scope to enable XLA:CPU.  To confirm that XLA is active, pass --vmodule=xla_compilation_cache=1 (as a proper command-line flag, not via TF_XLA_FLAGS) or set the envvar XLA_FLAGS=--xla_hlo_profile.
+Acceptance rate: 0.7294190476190476
+Final step size: 0.1376124620437622
+M == 
+	[[[0.5        0.62020534]
+	  [0.37979415 0.5       ]]
+	
+	 [[0.5        0.6200217 ]
+	  [0.37997958 0.5       ]]
+	
+	 [[0.5        0.61964166]
+	  [0.38035938 0.5       ]]
+	
+	 [[0.5        0.6198897 ]
+	  [0.38011202 0.5       ]]
+	
+	 [[0.5        0.6209467 ]
+	  [0.37904987 0.5       ]]]
+field==
+	[[0.09284459 0.90715605]
+	 [0.09307927 0.9069223 ]
+	 [0.09291523 0.9070881 ]
+	 [0.09291267 0.90708655]
+	 [0.09272338 0.907278  ]]
+wait time==
+	[[16.993975]
+	 [17.97578 ]
+	 [20.346851]
+	 [19.030003]
+	 [16.820967]]
+score_matrix=
+	[[3.1415778e-01 4.6486054e-02 2.1195421e-03 3.1807509e-04 1.1346002e-04
+	  7.2729621e-05 5.6035511e-05 4.4499739e-05 2.8279366e-05]
+	 [2.5610140e-01 4.0411678e-01 2.4080258e-02 1.7189577e-03 4.7173933e-04
+	  2.9135175e-04 2.3056696e-04 2.0117106e-04 1.6671694e-04]
+	 [2.6811028e-01 3.7188843e-01 7.2970593e-01 3.6025453e-02 4.6390356e-03
+	  2.5446007e-03 1.9764858e-03 1.7885079e-03 1.6286131e-03]
+	 [9.9104047e-02 1.1239731e-01 1.6856147e-01 8.1110030e-01 3.0179178e-02
+	  1.2032743e-02 8.5142972e-03 7.6978407e-03 7.2705853e-03]
+	 [5.0348345e-02 5.3508431e-02 6.3586041e-02 1.3509388e-01 9.2855984e-01
+	  1.3509388e-01 6.3586041e-02 5.3508431e-02 5.0348345e-02]
+	 [7.2705853e-03 7.6978407e-03 8.5142972e-03 1.2032743e-02 3.0179178e-02
+	  8.1110030e-01 1.6856147e-01 1.1239731e-01 9.9104047e-02]
+	 [1.6286131e-03 1.7885079e-03 1.9764858e-03 2.5446007e-03 4.6390356e-03
+	  3.6025453e-02 7.2970593e-01 3.7188843e-01 2.6811028e-01]
+	 [1.6671694e-04 2.0117106e-04 2.3056696e-04 2.9135175e-04 4.7173933e-04
+	  1.7189577e-03 2.4080258e-02 4.0411678e-01 2.5610140e-01]
+	 [2.8279366e-05 4.4499739e-05 5.6035511e-05 7.2729621e-05 1.1346002e-04
+	  3.1807509e-04 2.1195421e-03 4.6486054e-02 3.1415778e-01]]
+Average score pairings:
+	P(opp.score=-4.0 | pl.score=-4.0) == 31.415778398513794%
+	P(opp.score=-3.0 | pl.score=-4.0) == 25.610139966011047%
+	P(opp.score=-2.0 | pl.score=-4.0) == 26.81102752685547%
+	P(opp.score=-1.0 | pl.score=-4.0) == 9.910404682159424%
+	P(opp.score=0.0 | pl.score=-4.0) == 5.034834519028664%
+	P(opp.score=1.0 | pl.score=-4.0) == 0.7270585279911757%
+	P(opp.score=2.0 | pl.score=-4.0) == 0.16286130994558334%
+	P(opp.score=3.0 | pl.score=-4.0) == 0.016671694174874574%
+	P(opp.score=4.0 | pl.score=-4.0) == 0.002827936623361893%
+	P(opp.score=-4.0 | pl.score=-3.0) == 4.648605361580849%
+	P(opp.score=-3.0 | pl.score=-3.0) == 40.411677956581116%
+	P(opp.score=-2.0 | pl.score=-3.0) == 37.18884289264679%
+	P(opp.score=-1.0 | pl.score=-3.0) == 11.239731311798096%
+	P(opp.score=0.0 | pl.score=-3.0) == 5.350843071937561%
+	P(opp.score=1.0 | pl.score=-3.0) == 0.7697840686887503%
+	P(opp.score=2.0 | pl.score=-3.0) == 0.17885079141706228%
+	P(opp.score=3.0 | pl.score=-3.0) == 0.020117106032557786%
+	P(opp.score=4.0 | pl.score=-3.0) == 0.00444997385784518%
+	P(opp.score=-4.0 | pl.score=-2.0) == 0.21195420995354652%
+	P(opp.score=-3.0 | pl.score=-2.0) == 2.408025786280632%
+	P(opp.score=-2.0 | pl.score=-2.0) == 72.97059297561646%
+	P(opp.score=-1.0 | pl.score=-2.0) == 16.856147348880768%
+	P(opp.score=0.0 | pl.score=-2.0) == 6.35860413312912%
+	P(opp.score=1.0 | pl.score=-2.0) == 0.8514297194778919%
+	P(opp.score=2.0 | pl.score=-2.0) == 0.19764858298003674%
+	P(opp.score=3.0 | pl.score=-2.0) == 0.02305669622728601%
+	P(opp.score=4.0 | pl.score=-2.0) == 0.0056035511079244316%
+	P(opp.score=-4.0 | pl.score=-1.0) == 0.031807509367354214%
+	P(opp.score=-3.0 | pl.score=-1.0) == 0.17189576756209135%
+	P(opp.score=-2.0 | pl.score=-1.0) == 3.6025453358888626%
+	P(opp.score=-1.0 | pl.score=-1.0) == 81.11003041267395%
+	P(opp.score=0.0 | pl.score=-1.0) == 13.509388267993927%
+	P(opp.score=1.0 | pl.score=-1.0) == 1.2032742612063885%
+	P(opp.score=2.0 | pl.score=-1.0) == 0.2544600749388337%
+	P(opp.score=3.0 | pl.score=-1.0) == 0.029135175282135606%
+	P(opp.score=4.0 | pl.score=-1.0) == 0.007272962102433667%
+	P(opp.score=-4.0 | pl.score=0.0) == 0.011346001701895148%
+	P(opp.score=-3.0 | pl.score=0.0) == 0.04717393312603235%
+	P(opp.score=-2.0 | pl.score=0.0) == 0.46390355564653873%
+	P(opp.score=-1.0 | pl.score=0.0) == 3.0179178342223167%
+	P(opp.score=0.0 | pl.score=0.0) == 92.85598397254944%
+	P(opp.score=1.0 | pl.score=0.0) == 3.0179178342223167%
+	P(opp.score=2.0 | pl.score=0.0) == 0.46390355564653873%
+	P(opp.score=3.0 | pl.score=0.0) == 0.04717393312603235%
+	P(opp.score=4.0 | pl.score=0.0) == 0.011346001701895148%
+	P(opp.score=-4.0 | pl.score=1.0) == 0.007272962102433667%
+	P(opp.score=-3.0 | pl.score=1.0) == 0.029135175282135606%
+	P(opp.score=-2.0 | pl.score=1.0) == 0.2544600749388337%
+	P(opp.score=-1.0 | pl.score=1.0) == 1.2032742612063885%
+	P(opp.score=0.0 | pl.score=1.0) == 13.509388267993927%
+	P(opp.score=1.0 | pl.score=1.0) == 81.11003041267395%
+	P(opp.score=2.0 | pl.score=1.0) == 3.6025453358888626%
+	P(opp.score=3.0 | pl.score=1.0) == 0.17189576756209135%
+	P(opp.score=4.0 | pl.score=1.0) == 0.031807509367354214%
+	P(opp.score=-4.0 | pl.score=2.0) == 0.0056035511079244316%
+	P(opp.score=-3.0 | pl.score=2.0) == 0.02305669622728601%
+	P(opp.score=-2.0 | pl.score=2.0) == 0.19764858298003674%
+	P(opp.score=-1.0 | pl.score=2.0) == 0.8514297194778919%
+	P(opp.score=0.0 | pl.score=2.0) == 6.35860413312912%
+	P(opp.score=1.0 | pl.score=2.0) == 16.856147348880768%
+	P(opp.score=2.0 | pl.score=2.0) == 72.97059297561646%
+	P(opp.score=3.0 | pl.score=2.0) == 2.408025786280632%
+	P(opp.score=4.0 | pl.score=2.0) == 0.21195420995354652%
+	P(opp.score=-4.0 | pl.score=3.0) == 0.00444997385784518%
+	P(opp.score=-3.0 | pl.score=3.0) == 0.020117106032557786%
+	P(opp.score=-2.0 | pl.score=3.0) == 0.17885079141706228%
+	P(opp.score=-1.0 | pl.score=3.0) == 0.7697840686887503%
+	P(opp.score=0.0 | pl.score=3.0) == 5.350843071937561%
+	P(opp.score=1.0 | pl.score=3.0) == 11.239731311798096%
+	P(opp.score=2.0 | pl.score=3.0) == 37.18884289264679%
+	P(opp.score=3.0 | pl.score=3.0) == 40.411677956581116%
+	P(opp.score=4.0 | pl.score=3.0) == 4.648605361580849%
+	P(opp.score=-4.0 | pl.score=4.0) == 0.002827936623361893%
+	P(opp.score=-3.0 | pl.score=4.0) == 0.016671694174874574%
+	P(opp.score=-2.0 | pl.score=4.0) == 0.16286130994558334%
+	P(opp.score=-1.0 | pl.score=4.0) == 0.7270585279911757%
+	P(opp.score=0.0 | pl.score=4.0) == 5.034834519028664%
+	P(opp.score=1.0 | pl.score=4.0) == 9.910404682159424%
+	P(opp.score=2.0 | pl.score=4.0) == 26.81102752685547%
+	P(opp.score=3.0 | pl.score=4.0) == 25.610139966011047%
+	P(opp.score=4.0 | pl.score=4.0) == 31.415778398513794%
+Field distribution stats:
+	Archetype                 Mean   Std.Dev        5%       25%       50%       75%       95%
+	Breach                0.092894  0.011089  0.075790  0.085113  0.092293  0.099952  0.112139
+	Misc.                 0.907098  0.011089  0.887861  0.900048  0.907707  0.914887  0.924210
+EV stats:
+	Archetype                 Mean   Std.Dev        5%       25%       50%       75%       95%
+	Breach                0.609183  0.030649  0.558042  0.588637  0.609539  0.630159  0.658756
+	Misc.                 0.489043  0.002636  0.484816  0.487264  0.488980  0.490737  0.493470
+Computed from 100000 total samples.
+/home/jhatfiel/src/mtg-tfp/plots.py:143: MatplotlibDeprecationWarning: Adding an axes using the same arguments as a previous axes currently reuses the earlier instance.  In a future version, a new instance will always be created and returned.  Meanwhile, this warning can be suppressed, and the future behavior ensured, by passing a unique label to each axes instance.
+  sub = plt.subplot(n_rows, n_cols, k)
+]777;notify;Command completed;./matches.py -l 2020-02/combined_league.csv -r 2020-02/mtgo_records.csv -m 2020-02/gp_bologna_matchups.csv -s 2020-02/substitutions.csv -d Breach -n 20000 -b 1000 -c 5 -i 1 -o 2020-02/prebr/singleton-breach -p 2020-02/prebr/singleton-breach]0;jhatfiel@centos:~/src/mtg-tfp]7;file://centos/home/jhatfiel/src/mtg-tfp(base) [jhatfiel@centos mtg-tfp]$ exit
+
+Script done on 2020-03-09 00:42:19-04:00
