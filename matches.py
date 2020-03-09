@@ -1,6 +1,7 @@
 #!/usr/bin/env python
 
 import tensorflow as tf
+import tensorflow.compat.v1 as tf1
 import tensorflow_probability as tfp
 
 from math import ceil
@@ -27,8 +28,9 @@ def run_league_inference(
         num_chains=4):
     print("----Running MCMC----")
     league_model = LeagueModel(data['n_archetypes'], data['n_rounds'])
-    with tf.variable_scope(tf.get_variable_scope(), reuse=tf.AUTO_REUSE):
-        step_size = tf.get_variable(
+#    with tf.variable_scope(tf.get_variable_scope(), reuse=tf.AUTO_REUSE):
+    with tf1.variable_scope(tf1.get_variable_scope(), reuse=tf1.AUTO_REUSE):
+        step_size = tf1.get_variable(
             name="step_size",
             initializer=tf.constant(step_size, dtype=tf.float32),
             trainable=False,
@@ -40,18 +42,20 @@ def run_league_inference(
                                                     data['matchup_wins']),
         num_leapfrog_steps=leapfrog_steps,
         step_size=step_size,
-        step_size_update_fn=tfp.mcmc.make_simple_step_size_update_policy(num_adaptation_steps=int(burn_in*.8)),
+#        step_size_update_fn=tfp.mcmc.make_simple_step_size_update_policy(num_adaptation_steps=int(burn_in*.8)),
         state_gradients_are_stopped=True)
     hmc = tfp.mcmc.TransformedTransitionKernel(inner_kernel, league_model.bijectors(num_chains))
+    adapting = tfp.mcmc.SimpleStepSizeAdaptation(inner_kernel=hmc, num_adaptation_steps=int(burn_in*.8))
     sample_vars, kernel_results = tfp.mcmc.sample_chain(
         num_results=num_samples,
         num_steps_between_results=sample_interval,
         num_burnin_steps=burn_in,
         current_state=league_model.initial_state(num_chains),
-        kernel=hmc)
+        kernel=adapting,
+        trace_fn=lambda _, pkr: pkr.inner_results)
     league_model.add_vars(sample_vars, kernel_results)
-    init_g = tf.global_variables_initializer()
-    init_l = tf.local_variables_initializer()
+    init_g = tf1.global_variables_initializer()
+    init_l = tf1.local_variables_initializer()
     session.run([init_g])
     session.run([init_l])
     results = session.run(league_model.vars)
@@ -65,7 +69,7 @@ def indent(obj, prefix="\t"):
 def summarize_run(mcmc_results, archetype_labels, burn_in):
     print("Acceptance rate: {}".format(mcmc_results["kernel_results"].inner_results.is_accepted.mean()))
     print("Final step size: {}".format(mcmc_results["kernel_results"]
-                                       .inner_results.extra.step_size_assign[-100:].mean()))
+                                       .inner_results.proposed_results.step_size[-100:].mean()))
     avg_field = np.mean(mcmc_results["field"][burn_in:, :, :], axis=0)
     avg_matchups = np.mean(mcmc_results["matchup_matrix"][burn_in:, :, :, :], axis=0)
     avg_wait = np.mean(mcmc_results["wait_time"][burn_in:, :, :], axis=0)
@@ -96,12 +100,13 @@ def summarize_run(mcmc_results, archetype_labels, burn_in):
     for i in range(len(archetype_labels)):
         stats = ("{:10f}" * len(ev_summary[i])).format(*ev_summary[i])
         print(f"\t{archetype_labels[i]:20}{stats}")
+    print(f"Computed from {flat_field.shape[0]} total samples.")
 
 
 def plot_traces(mcmc_results, archetype_labels, out_dir=None):
-    session = tf.get_default_session()
+    session = tf1.get_default_session()
     if session is None:
-        session = tf.Session()
+        session = tf1.Session()
     indices = session.run(generate.free_to_matrix(len(archetype_labels)))
     tlp = mcmc_results["kernel_results"].inner_results.proposed_results.target_log_prob
     plots.trace(tlp,
@@ -192,7 +197,7 @@ def generate_sample_data(session, n_archetypes, n_rounds, wait_time, n_matches, 
 
 
 def run_example():
-    sess = tf.Session()
+    sess = tf1.Session()
     n_chains = 4
     burn_in = 100
     n_samples = 5000
@@ -293,7 +298,6 @@ class InputData(object):
                 if deck1 == deck2:
                     continue
                 elif self.extra_match_counts.get(deck2, {}).get(deck1, 0) == n:
-                    print('SKIPPING {} vs. {}, already processed in reverse order'.format(deck2, deck1))
                     continue
                 self.extra_match_counts[deck1] = self.extra_match_counts.get(deck1, {})
                 self.extra_match_counts[deck1][deck2] = self.extra_match_counts[deck1].get(deck2, 0) + n
@@ -415,6 +419,18 @@ if __name__ == "__main__":
                             help='Directory to which to save the trace of the run.')
         parser.add_argument('-p', '--plot-dir', action='store', default=None,
                             help='Directory to which to save plots.')
+
+        parser.add_argument('-n', '--num-samples', action='store', type=int, default=20000,
+                            help='Number of post-burn-in MCMC samples.')
+        parser.add_argument('-b', '--burn-in', action='store', type=int, default=1000,
+                            help='Number of MCMC burn-in samples: skip over this many samples at'
+                            ' the beginning for the purposes of computing posterior probabilities.')
+        parser.add_argument('-c', '--chains', action='store', type=int, default=4,
+                            help='Number of independent MCMC chains.')
+        parser.add_argument('-i', '--sample-interval', action='store', type=int, default=0,
+                            help='MCMC sampling interval: skip this many samples between each'
+                            ' recorded samples for the purposes of computing posterior'
+                            ' probabilities.')
         arguments = parser.parse_args(sys.argv[1:])
 
         input_data = InputData()
@@ -429,12 +445,14 @@ if __name__ == "__main__":
 
         data, labels = input_data.gather_data(arguments.decks)
 
-        sess = tf.Session()
-        n_samples = 21000
-        burn_in = 1000
+        sess = tf1.Session()
+        burn_in = arguments.burn_in
+        n_samples = arguments.num_samples + burn_in
+        n_chains = arguments.chains
+        skip = arguments.sample_interval
         t_model, results = run_league_inference(sess, data,
-                                                num_samples=n_samples, sample_interval=0,
-                                                burn_in=burn_in, num_chains=4)
+                                                num_samples=n_samples, sample_interval=skip,
+                                                burn_in=burn_in, num_chains=n_chains)
         process_results(sess, results, labels, burn_in, arguments.output_dir, False, plot_dir=arguments.plot_dir)
     else:
         print('Running example...')

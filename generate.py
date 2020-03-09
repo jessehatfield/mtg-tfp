@@ -2,6 +2,7 @@
 
 import numpy as np
 import tensorflow as tf
+import tensorflow.compat.v1 as tf1
 import tensorflow_probability as tfp
 from tensorflow.contrib.distributions import fill_triangular, fill_triangular_inverse
 
@@ -176,7 +177,7 @@ def rv_outcomes(match_counts, win_prob):
 def rv_pairing_counts(record_totals, p_deck_given_record):
     return tfp.distributions.Multinomial(
         tf.cast(record_totals, dtype=tf.float32),
-        probs=tf.linalg.transpose(p_deck_given_record))
+        probs=tf.linalg.matrix_transpose(p_deck_given_record))
 
 
 def wins_to_outcomes(wins, total=1):
@@ -192,7 +193,7 @@ def outcomes_to_wins(outcomes):
 
 
 def gen_sample_data(
-        session: tf.Session,
+        session: tf1.Session,
         n_archetypes,
         n_matches,
         matchup_prior=priors.matchup(),
@@ -259,7 +260,7 @@ def gen_winners(field, ev, n_winners, win_count, loss_count):
 
 
 def gen_league_data(
-        session: tf.Session,
+        session: tf1.Session,
         n_archetypes,
         n_rounds,
         n_matches,
@@ -295,7 +296,7 @@ def gen_league_data(
 
 
 if __name__ == "__main__":
-    sess = tf.Session()
+    sess = tf1.Session()
 #    data = gen_sample_data(sess, 3, 100)
     data = gen_league_data(sess, 3, 3, 100)
     m = np.array([[.5, .7, .2], [.3, .5, .6], [.8, .4, .5]], dtype=np.float32)

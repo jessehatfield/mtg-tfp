@@ -262,9 +262,9 @@ class LeagueModel(TournamentModel):
             # To add in independent record observations, calculate per-match EV (dimensions c * d * 1)
             candidate_ev = tf.linalg.matmul(candidate_matchup_matrix, tf.expand_dims(candidate_field, -1))
             # Calculate logs of match results and deck probability
-            log_p_win = tf.reshape(tf.log(candidate_ev), (n_hypotheses, self.n_archetypes))  # c * d
-            log_p_lose = tf.reshape(tf.log(1.0 - candidate_ev), (n_hypotheses, self.n_archetypes))  # c * d
-            log_p_deck = tf.log(candidate_field)  # c * d
+            log_p_win = tf.reshape(tf.math.log(candidate_ev), (n_hypotheses, self.n_archetypes))  # c * d
+            log_p_lose = tf.reshape(tf.math.log(1.0 - candidate_ev), (n_hypotheses, self.n_archetypes))  # c * d
+            log_p_deck = tf.math.log(candidate_field)  # c * d
             # To add in independent matchup observations, calculate per-pairing log prob (dimensions c * d * d)
             ind_matchups = tfp.distributions.Binomial(probs=candidate_matchup_matrix, total_count=matchup_counts)
             ll_ind_pairings = ind_matchups.log_prob(matchup_wins)
