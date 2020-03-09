@@ -10,6 +10,7 @@ import numpy as np
 import argparse
 import csv
 import pickle
+import re
 import sys
 
 import generate
@@ -239,6 +240,11 @@ class InputData(object):
                 l = int(row['l']) if len(row.get('l', '')) > 0 else None
                 opponent = row.get('Opposing Deck', row.get('deck', ''))
                 opponent = self.substitutions.get(opponent, opponent)
+                inverted = re.match('^([^:]+): ([^:]+)$', opponent)
+                if inverted:
+                    fullname = f'{inverted.group(2)} {inverted.group(1)}'
+                    opponent = self.substitutions.get(fullname, inverted.group(1))
+                opponent = self.substitutions.get(opponent, opponent)
                 if w is None or l is None or len(opponent) == 0:
                     print('SKIPPING ROW: {}'.format(row))
                     continue
@@ -307,6 +313,7 @@ class InputData(object):
     def gather_data(self, selection):
         archetypes = list(self.archetype_totals.keys())
         archetypes.sort(key=lambda x: 1 if x == 'Misc.' else -(self.archetype_totals[x]+self.deck_counts.get(x, 0)))
+        print(archetypes)
         if selection.isdigit():
             n = min(int(selection), len(archetypes)-1)
         else:
