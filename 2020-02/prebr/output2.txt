@@ -1,0 +1,183 @@
+Script started on 2020-03-09 07:16:56-04:00
+]777;notify;Command completed;vim 2020-02/card_substitutions.csv ]0;jhatfiel@centos:~/src/mtg-tfp]7;file://centos/home/jhatfiel/src/mtg-tfp(base) [jhatfiel@centos mtg-tfp]$ ./matches.py -r 2020-02/card_records.csv -c 5 -n 20000 -b 1000 -i 1 -o 2020-02/prebr/cards -p 2020-02/prebr/cards
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:516: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:517: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:518: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:519: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:520: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:525: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:541: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:542: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:543: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:544: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:545: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:550: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+['Delver', 'Chalice', 'Other', 'Brainstorm', 'Breach', 'Snow', 'Vial']
+Loaded data:
+	 n_archetypes 7
+	 n_rounds 0
+	 paired_scores [[0]]
+	 pairing_counts [[0, 0, 0, 0, 0, 0, 0]]
+	 record_counts [[0, 0, 0, 0, 0, 0, 0]]
+	 win_counts [318, 312, 306, 291, 287, 153, 68]
+	 loss_counts [149, 130, 125, 126, 99, 61, 30]
+	 deck_counts [82, 77, 74, 71, 68, 38, 17]
+	 matchup_counts [[0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]]
+	 matchup_wins [[0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]]
+	 archetypes ['Delver', 'Chalice', 'Other', 'Brainstorm', 'Breach', 'Snow', 'Vial']
+	 obs_proportion [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]
+2020-03-09 07:17:03.161279: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 3991395000 Hz
+2020-03-09 07:17:03.161971: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x5626926cc3c0 executing computations on platform Host. Devices:
+2020-03-09 07:17:03.161999: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
+----Running MCMC----
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow_probability/python/mcmc/internal/util.py:494: UserWarning: `step_size` is not a `tf.Tensor`, Python number, or Numpy array. If this parameter is mutable (e.g., a `tf.Variable`), then the behavior implied by `store_parameters_in_results` will silently change on 2019-08-01. Please consult the docstring for `store_parameters_in_results` details and use `store_parameters_in_results=True` to silence this warning.
+  param_name))
+WARNING: Logging before flag parsing goes to stderr.
+W0309 07:17:03.392987 139817291200320 deprecation.py:323] From /home/jhatfiel/src/mtg-tfp/generate.py:39: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+2020-03-09 07:17:08.723272: W tensorflow/compiler/jit/mark_for_compilation_pass.cc:1412] (One-time warning): Not using XLA:CPU for cluster because envvar TF_XLA_FLAGS=--tf_xla_cpu_global_jit was not set.  If you want XLA:CPU, either set that envvar, or use experimental_jit_scope to enable XLA:CPU.  To confirm that XLA is active, pass --vmodule=xla_compilation_cache=1 (as a proper command-line flag, not via TF_XLA_FLAGS) or set the envvar XLA_FLAGS=--xla_hlo_profile.
+Acceptance rate: 0.7594190476190477
+Final step size: 0.11055734008550644
+M == 
+	[[[0.5        0.40133032 0.3981796  0.42585236 0.35842282 0.44310927
+	   0.4996943 ]
+	  [0.5986717  0.5        0.4846782  0.5022556  0.43379614 0.49640298
+	   0.5190352 ]
+	  [0.6018174  0.51532125 0.5        0.517773   0.451481   0.5061895
+	   0.5170314 ]
+	  [0.5741477  0.49774408 0.4822267  0.5        0.4470644  0.4938583
+	   0.50981086]
+	  [0.64157665 0.56620413 0.5485186  0.5529365  0.5        0.52788955
+	   0.52626103]
+	  [0.55689055 0.5035971  0.49380946 0.5061417  0.47211146 0.5
+	   0.51318794]
+	  [0.5003058  0.4809662  0.4829692  0.4901895  0.47373867 0.48681176
+	   0.5       ]]
+	
+	 [[0.5        0.404567   0.39694655 0.4294765  0.35772523 0.44017515
+	   0.49697202]
+	  [0.5954328  0.5        0.48691005 0.49877256 0.4493707  0.5027401
+	   0.5102309 ]
+	  [0.60305184 0.51308954 0.5        0.517406   0.46128675 0.5072155
+	   0.51594627]
+	  [0.5705237  0.5012275  0.48259366 0.5        0.44089428 0.48778707
+	   0.5137968 ]
+	  [0.6422719  0.5506315  0.53871447 0.55910414 0.5        0.5263062
+	   0.5286229 ]
+	  [0.5598256  0.49725977 0.49278355 0.51221204 0.473695   0.5
+	   0.5097586 ]
+	  [0.5030274  0.48976898 0.48405263 0.48620284 0.47137657 0.49024132
+	   0.5       ]]
+	
+	 [[0.5        0.3991742  0.39306065 0.4133812  0.35782903 0.43663695
+	   0.48858067]
+	  [0.600824   0.5        0.4891714  0.50442696 0.44871914 0.495421
+	   0.5053093 ]
+	  [0.6069394  0.510828   0.5        0.5219996  0.45570073 0.50505155
+	   0.5132488 ]
+	  [0.58661765 0.49557295 0.47800133 0.5        0.4448749  0.48636425
+	   0.508041  ]
+	  [0.6421709  0.5512814  0.5442978  0.5551235  0.5        0.53146183
+	   0.5190077 ]
+	  [0.5633625  0.5045793  0.49494776 0.5136355  0.46853906 0.5
+	   0.5161951 ]
+	  [0.51141924 0.4946908  0.4867507  0.4919586  0.48099262 0.48380527
+	   0.5       ]]
+	
+	 [[0.5        0.40037394 0.38851136 0.41539466 0.35165232 0.4376802
+	   0.48889628]
+	  [0.5996263  0.5        0.48276642 0.50437236 0.44990304 0.49599648
+	   0.5066375 ]
+	  [0.6114898  0.5172331  0.5        0.51676047 0.45575815 0.5086859
+	   0.5117874 ]
+	  [0.5846064  0.49562818 0.48323905 0.5        0.44654062 0.488608
+	   0.50363934]
+	  [0.6483486  0.5500962  0.54424244 0.5534607  0.5        0.5265469
+	   0.51571506]
+	  [0.56231767 0.504003   0.49131426 0.51139104 0.47345346 0.5
+	   0.50964344]
+	  [0.5111043  0.49336177 0.48821285 0.49636075 0.48428476 0.49035597
+	   0.5       ]]
+	
+	 [[0.5        0.40989414 0.39616838 0.4229959  0.352587   0.44243312
+	   0.48424765]
+	  [0.5901055  0.5        0.48819774 0.5100793  0.44802374 0.49536103
+	   0.5075472 ]
+	  [0.6038333  0.51180214 0.5        0.5150838  0.46135795 0.50076294
+	   0.5046463 ]
+	  [0.57700276 0.489921   0.48491567 0.5        0.44380653 0.4943683
+	   0.5000333 ]
+	  [0.647413   0.55197585 0.53864294 0.55619574 0.5        0.5289818
+	   0.5242017 ]
+	  [0.55756766 0.50463897 0.49923712 0.5056313  0.47101673 0.5
+	   0.51083124]
+	  [0.5157528  0.49245304 0.4953539  0.4999669  0.47579804 0.48916832
+	   0.5       ]]]
+field==
+	[[0.26765996 0.16794449 0.15337585 0.15875395 0.12155765 0.08591022
+	  0.04479739]
+	 [0.26669225 0.16673036 0.1526164  0.1602024  0.12256777 0.08559807
+	  0.045593  ]
+	 [0.2737449  0.16524047 0.1523176  0.15858579 0.12264156 0.08431941
+	  0.04315103]
+	 [0.27497268 0.16593373 0.15127027 0.15769516 0.12225273 0.08535338
+	  0.0425215 ]
+	 [0.26980206 0.16726789 0.1537399  0.15957499 0.12240106 0.08540923
+	  0.04180497]]
+wait time==
+	[[22.485695]
+	 [19.512999]
+	 [22.728703]
+	 [19.937609]
+	 [19.608309]]
+score_matrix=
+	[[0.9596501]]
+Average score pairings:
+	P(opp.score=0.0 | pl.score=0.0) == 95.96500992774963%
+Field distribution stats:
+	Archetype                 Mean   Std.Dev        5%       25%       50%       75%       95%
+	Delver                0.270575  0.049504  0.190330  0.234325  0.270135  0.306252  0.352846
+	Chalice               0.166624  0.029166  0.126014  0.146164  0.162947  0.182856  0.219858
+	Other                 0.152663  0.025122  0.116612  0.134987  0.149905  0.167419  0.197975
+	Brainstorm            0.158961  0.029530  0.118349  0.138338  0.155078  0.175127  0.212755
+	Breach                0.122285  0.018393  0.094810  0.109363  0.120806  0.133627  0.154810
+	Snow                  0.085318  0.019514  0.058742  0.071747  0.082688  0.095793  0.120608
+	Vial                  0.043573  0.014393  0.025172  0.033600  0.041153  0.050620  0.070343
+EV stats:
+	Archetype                 Mean   Std.Dev        5%       25%       50%       75%       95%
+	Delver                0.437029  0.030622  0.392721  0.414395  0.433702  0.456494  0.492143
+	Chalice               0.523442  0.032794  0.467601  0.502065  0.524729  0.546006  0.575415
+	Other                 0.534630  0.031230  0.481569  0.514127  0.535485  0.556355  0.584238
+	Brainstorm            0.515259  0.033373  0.457988  0.493665  0.516637  0.538295  0.567593
+	Breach                0.571923  0.029387  0.522738  0.552505  0.572343  0.591892  0.619465
+	Snow                  0.517778  0.037314  0.454371  0.493482  0.519141  0.543264  0.577005
+	Vial                  0.495284  0.042604  0.422808  0.467566  0.496669  0.524538  0.562753
+Computed from 100000 total samples.
+]777;notify;Command completed;./matches.py -r 2020-02/card_records.csv -c 5 -n 20000 -b 1000 -i 1 -o 2020-02/prebr/cards -p 2020-02/prebr/cards]0;jhatfiel@centos:~/src/mtg-tfp]7;file://centos/home/jhatfiel/src/mtg-tfp(base) [jhatfiel@centos mtg-tfp]$ exit
+
+Script done on 2020-03-09 07:22:39-04:00

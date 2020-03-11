@@ -1,0 +1,180 @@
+Script started on 2020-03-09 06:57:55-04:00
+]777;notify;Command completed;./matches.py -l 2020-02/combined_league.csv -r 2020-02/mtgo_records.csv -m 2020-02/gp_bologna_matchups.csv -s 2020-02/substitutions.csv -d Control -n 20000 -b 1000 -c 5 -i 1 -o 2020-02/prebr/singleton-control -p 2020-02/prebr/singleton-control]0;jhatfiel@centos:~/src/mtg-tfp]7;file://centos/home/jhatfiel/src/mtg-tfp(base) [jhatfiel@centos mtg-tfp]$ ./matches.py -d 6 -r 2020-02/card_records.csv -c 5 -n 20000 -b 1000 -i 1 -o 2020-02/prebr/cards -p 2020-02/prebr/cards
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:516: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:517: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:518: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:519: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:520: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow/python/framework/dtypes.py:525: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:541: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint8 = np.dtype([("qint8", np.int8, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:542: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint8 = np.dtype([("quint8", np.uint8, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:543: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint16 = np.dtype([("qint16", np.int16, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:544: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_quint16 = np.dtype([("quint16", np.uint16, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:545: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  _np_qint32 = np.dtype([("qint32", np.int32, 1)])
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorboard/compat/tensorflow_stub/dtypes.py:550: FutureWarning: Passing (type, 1) or '1type' as a synonym of type is deprecated; in a future version of numpy, it will be understood as (type, (1,)) / '(1,)type'.
+  np_resource = np.dtype([("resource", np.ubyte, 1)])
+['Delver', 'Chalice', 'Other', 'Brainstorm', 'Breach', 'Snow', 'Vial']
+Loaded data:
+	 n_archetypes 7
+	 n_rounds 0
+	 paired_scores [[0]]
+	 pairing_counts [[0, 0, 0, 0, 0, 0, 0]]
+	 record_counts [[0, 0, 0, 0, 0, 0, 0]]
+	 deck_counts [82, 77, 74, 71, 68, 38, 17]
+	 loss_counts [149, 130, 125, 126, 99, 61, 30]
+	 win_counts [318, 312, 306, 291, 287, 153, 68]
+	 matchup_wins [[0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]]
+	 matchup_counts [[0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]
+ [0. 0. 0. 0. 0. 0. 0.]]
+	 archetypes ['Delver', 'Chalice', 'Other', 'Brainstorm', 'Breach', 'Snow', 'Misc.']
+	 obs_proportion [0.0, 0.0, 0.0, 0.0, 0.0, 0.0, 1.0]
+2020-03-09 06:58:02.601600: I tensorflow/core/platform/profile_utils/cpu_utils.cc:94] CPU Frequency: 3991395000 Hz
+2020-03-09 06:58:02.603044: I tensorflow/compiler/xla/service/service.cc:168] XLA service 0x563438d203c0 executing computations on platform Host. Devices:
+2020-03-09 06:58:02.603078: I tensorflow/compiler/xla/service/service.cc:175]   StreamExecutor device (0): <undefined>, <undefined>
+----Running MCMC----
+/home/jhatfiel/miniconda3/lib/python3.7/site-packages/tensorflow_probability/python/mcmc/internal/util.py:494: UserWarning: `step_size` is not a `tf.Tensor`, Python number, or Numpy array. If this parameter is mutable (e.g., a `tf.Variable`), then the behavior implied by `store_parameters_in_results` will silently change on 2019-08-01. Please consult the docstring for `store_parameters_in_results` details and use `store_parameters_in_results=True` to silence this warning.
+  param_name))
+WARNING: Logging before flag parsing goes to stderr.
+W0309 06:58:02.799355 140665182672704 deprecation.py:323] From /home/jhatfiel/src/mtg-tfp/generate.py:39: add_dispatch_support.<locals>.wrapper (from tensorflow.python.ops.array_ops) is deprecated and will be removed in a future version.
+Instructions for updating:
+Use tf.where in 2.0, which has the same broadcast rule as np.where
+2020-03-09 06:58:07.946835: W tensorflow/compiler/jit/mark_for_compilation_pass.cc:1412] (One-time warning): Not using XLA:CPU for cluster because envvar TF_XLA_FLAGS=--tf_xla_cpu_global_jit was not set.  If you want XLA:CPU, either set that envvar, or use experimental_jit_scope to enable XLA:CPU.  To confirm that XLA is active, pass --vmodule=xla_compilation_cache=1 (as a proper command-line flag, not via TF_XLA_FLAGS) or set the envvar XLA_FLAGS=--xla_hlo_profile.
+Acceptance rate: 0.760647619047619
+Final step size: 0.11055734008550644
+M == 
+	[[[0.5        0.40685913 0.39167652 0.4121528  0.3590199  0.44016245
+	   0.50029516]
+	  [0.59314066 0.5        0.49151927 0.5023873  0.4478732  0.4961411
+	   0.51556844]
+	  [0.6083248  0.5084804  0.5        0.5153207  0.45754215 0.509985
+	   0.5158747 ]
+	  [0.5878434  0.4976126  0.48467866 0.5        0.44046363 0.49544927
+	   0.5113119 ]
+	  [0.64097947 0.55212635 0.54245836 0.55953413 0.5        0.53399223
+	   0.52426225]
+	  [0.55983907 0.50385845 0.49001518 0.5045499  0.46600693 0.5
+	   0.5007096 ]
+	  [0.499705   0.4844312  0.48412582 0.48868823 0.4757389  0.4992909
+	   0.5       ]]
+	
+	 [[0.5        0.40639958 0.4009728  0.42183033 0.35271513 0.4433944
+	   0.48143145]
+	  [0.59359974 0.5        0.48720685 0.5095552  0.44559628 0.4919425
+	   0.5154312 ]
+	  [0.5990286  0.51279354 0.5        0.5214959  0.45724526 0.5045216
+	   0.50915223]
+	  [0.5781681  0.49044508 0.4785043  0.5        0.4481627  0.4953126
+	   0.51005673]
+	  [0.6472856  0.55440253 0.5427553  0.55183685 0.5        0.5241001
+	   0.53336084]
+	  [0.55660564 0.5080573  0.49547857 0.5046872  0.4759003  0.5
+	   0.5085495 ]
+	  [0.5185687  0.48456895 0.49084845 0.48994398 0.46664116 0.49145025
+	   0.5       ]]
+	
+	 [[0.5        0.400691   0.3900053  0.41802812 0.35317877 0.44065708
+	   0.49145636]
+	  [0.5993102  0.5        0.4960603  0.507644   0.44980538 0.48898306
+	   0.5130471 ]
+	  [0.60999465 0.5039395  0.5        0.5170914  0.4570798  0.5031618
+	   0.512969  ]
+	  [0.5819725  0.4923561  0.482908   0.5        0.44393024 0.48819765
+	   0.5092368 ]
+	  [0.64682317 0.5501938  0.5429187  0.5560694  0.5        0.5235651
+	   0.5305498 ]
+	  [0.559342   0.51101685 0.4968384  0.51180124 0.47643432 0.5
+	   0.5060076 ]
+	  [0.50854343 0.48695385 0.48703146 0.49076265 0.46944883 0.49399287
+	   0.5       ]]
+	
+	 [[0.5        0.40342942 0.39373213 0.42250606 0.35305765 0.43741235
+	   0.49144042]
+	  [0.596568   0.5        0.4876205  0.50852215 0.4402485  0.494131
+	   0.5096298 ]
+	  [0.60626847 0.51237947 0.5        0.5197031  0.4647974  0.5026302
+	   0.5147784 ]
+	  [0.57749265 0.49147764 0.48029634 0.5        0.44346583 0.48973417
+	   0.512471  ]
+	  [0.6469437  0.55975044 0.5352021  0.5565343  0.5        0.52986676
+	   0.5264853 ]
+	  [0.5625874  0.50586885 0.49736977 0.51026577 0.47013324 0.5
+	   0.50567156]
+	  [0.5085599  0.4903707  0.48522085 0.48752832 0.4735146  0.49432823
+	   0.5       ]]
+	
+	 [[0.5        0.40794292 0.39167216 0.4184787  0.35088024 0.44074154
+	   0.4849251 ]
+	  [0.5920569  0.5        0.48192954 0.51447594 0.44887638 0.48561016
+	   0.5126881 ]
+	  [0.608328   0.5180713  0.5        0.50743943 0.4580849  0.5025461
+	   0.50647056]
+	  [0.58152133 0.48552558 0.49255985 0.5        0.44805312 0.48968413
+	   0.5026663 ]
+	  [0.6491204  0.5511251  0.5419142  0.55194706 0.5        0.5247071
+	   0.51670617]
+	  [0.5592561  0.51438946 0.49745387 0.51031536 0.47529247 0.5
+	   0.5121735 ]
+	  [0.51507604 0.48731235 0.49352968 0.49733388 0.48329467 0.48782623
+	   0.5       ]]]
+field==
+	[[0.27068186 0.16625802 0.1524542  0.1568314  0.12189172 0.08635576
+	  0.04552728]
+	 [0.26936957 0.1668099  0.15370065 0.15906541 0.1221019  0.0855886
+	  0.0433624 ]
+	 [0.27337164 0.16402753 0.15347898 0.15873034 0.12207346 0.084374
+	  0.04394475]
+	 [0.2708118  0.16628422 0.15187414 0.16024739 0.12244849 0.0849489
+	  0.04338469]
+	 [0.27188283 0.16700083 0.15306148 0.15854697 0.12253255 0.08426393
+	  0.0427113 ]]
+wait time==
+	[[19.44695 ]
+	 [17.73273 ]
+	 [18.176989]
+	 [20.912395]
+	 [18.32259 ]]
+score_matrix=
+	[[0.9333045]]
+Average score pairings:
+	P(opp.score=0.0 | pl.score=0.0) == 93.3304488658905%
+Field distribution stats:
+	Archetype                 Mean   Std.Dev        5%       25%       50%       75%       95%
+	Delver                0.271223  0.049810  0.190184  0.234466  0.270999  0.307416  0.352833
+	Chalice               0.166075  0.028601  0.125636  0.146019  0.162602  0.182380  0.218253
+	Other                 0.152913  0.024853  0.116892  0.135360  0.150397  0.167629  0.197541
+	Brainstorm            0.158685  0.029474  0.118040  0.137837  0.154922  0.175090  0.212312
+	Breach                0.122209  0.018185  0.094964  0.109373  0.120806  0.133400  0.154193
+	Snow                  0.085106  0.019757  0.058368  0.071329  0.082415  0.095743  0.120563
+	Misc.                 0.043786  0.014175  0.025464  0.034152  0.041469  0.050741  0.069541
+EV stats:
+	Archetype                 Mean   Std.Dev        5%       25%       50%       75%       95%
+	Delver                0.436561  0.030791  0.392609  0.413481  0.432878  0.456321  0.492526
+	Chalice               0.523761  0.032354  0.468579  0.502523  0.524834  0.545904  0.575116
+	Other                 0.534204  0.030807  0.482125  0.513639  0.534960  0.555400  0.583736
+	Brainstorm            0.515785  0.033770  0.457858  0.493604  0.517150  0.539288  0.568932
+	Breach                0.572215  0.028709  0.524134  0.552993  0.572717  0.591974  0.618529
+	Snow                  0.518389  0.038032  0.454127  0.493675  0.519687  0.544614  0.578806
+	Misc.                 0.495097  0.042272  0.424791  0.467336  0.496338  0.523846  0.562424
+Computed from 100000 total samples.

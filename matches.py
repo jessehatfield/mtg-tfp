@@ -314,8 +314,12 @@ class InputData(object):
         archetypes = list(self.archetype_totals.keys())
         archetypes.sort(key=lambda x: 1 if x == 'Misc.' else -(self.archetype_totals[x]+self.deck_counts.get(x, 0)))
         print(archetypes)
+        add_misc = True
         if selection.isdigit():
-            n = min(int(selection), len(archetypes)-1)
+            n = int(selection)
+            if n < 1 or n >= len(archetypes):
+                n = len(archetypes)
+                add_misc = False
         else:
             archetypes = [selection] + [a for a in archetypes if a != selection]
             n = 1
@@ -340,7 +344,7 @@ class InputData(object):
                 record_counts.append(deck_distribution)
                 pairing_counts.append(paired_deck_distribution)
         archetype_counts = [self.archetype_totals[x] for x in archetypes]
-        archetype_proportions = [archetype_counts[i] / float(sum(archetype_counts)) for i in range(n)]
+        archetype_proportions = [archetype_counts[i] / max(1, float(sum(archetype_counts))) for i in range(n)]
         archetype_proportions.append(1.0 - sum(archetype_proportions))
         fully_specified_data = {
             'n_archetypes': len(archetypes),
@@ -354,8 +358,10 @@ class InputData(object):
             'matchup_counts': np.array([[self.extra_match_counts.get(x, {}).get(y, 0) for y in archetypes] for x in archetypes], dtype=np.float64),
             'matchup_wins': np.array([[self.extra_match_wins.get(x, {}).get(y, 0) for y in archetypes] for x in archetypes], dtype=np.float64)
         }
-        archetype_list = archetypes[:n] + ["Misc."]
-        consolidated_data = self.consolidate(fully_specified_data, n)
+        archetype_list = archetypes[:n]
+        if add_misc:
+            archetype_list.append("Misc.")
+        consolidated_data = self.consolidate(fully_specified_data, n, add_misc)
         consolidated_data['archetypes'] = archetype_list
         consolidated_data['obs_proportion'] = archetype_proportions
         print("Loaded data:")
@@ -363,9 +369,9 @@ class InputData(object):
             print("\t", key, consolidated_data[key])
         return consolidated_data, archetype_list
 
-    def consolidate(self, data, n):
+    def consolidate(self, data, n, misc=True):
         transformed = {
-            'n_archetypes': n+1,
+            'n_archetypes': n+1 if misc else n,
             'n_rounds': data['n_rounds'],
             'paired_scores': data['paired_scores'],
             'pairing_counts': [],
@@ -374,26 +380,30 @@ class InputData(object):
         for r_i in range(len(data['record_counts'])):
             for key in {'pairing_counts', 'record_counts'}:
                 new_list = [data[key][r_i][j] for j in range(n)]
-                total = sum([data[key][r_i][j] for j in range(n, len(data[key][r_i]))])
-                new_list.append(total)
+                if misc:
+                    total = sum([data[key][r_i][j] for j in range(n, len(data[key][r_i]))])
+                    new_list.append(total)
                 transformed[key].append(new_list)
             for key in {'deck_counts', 'win_counts', 'loss_counts'}:
                 new_list = [data[key][j] for j in range(n)]
-                total = sum([data[key][j] for j in range(n, len(data[key]))])
-                new_list.append(total)
+                if misc:
+                    total = sum([data[key][j] for j in range(n, len(data[key]))])
+                    new_list.append(total)
                 transformed[key] = new_list
         for key in {'matchup_counts', 'matchup_wins'}:
             temp_counts = []
             for i in range(len(data[key])):
                 old_counts = data[key][i]
                 new_counts = [data[key][i][j] for j in range(n)]
-                total = sum([data[key][i][j] for j in range(n, len(old_counts))])
-                new_counts.append(total)
+                if misc:
+                    total = sum([data[key][i][j] for j in range(n, len(old_counts))])
+                    new_counts.append(total)
                 temp_counts.append(new_counts)
             transformed_counts = [temp_counts[i] for i in range(n)]
-            n_misc = len(data[key])
-            misc_counts = [sum([temp_counts[i][j] for i in range(n, n_misc)]) for j in range(n+1)]
-            transformed_counts.append(misc_counts)
+            if misc:
+                n_misc = len(data[key])
+                misc_counts = [sum([temp_counts[i][j] for i in range(n, n_misc)]) for j in range(n+1)]
+                transformed_counts.append(misc_counts)
             transformed[key] = np.array(transformed_counts, dtype=np.float32)
         return transformed
 
@@ -418,7 +428,7 @@ if __name__ == "__main__":
         parser.add_argument('-r', '--final-records', action='store', nargs='+', default=[],
                             help='CSV file(s) containing final tournament records',
                             metavar='filename')
-        parser.add_argument('-d', '--decks', action='store', default='9',
+        parser.add_argument('-d', '--decks', action='store', default='0',
                             help='Either the maximum number of individual decks to consider at once;'
                             ' or a single deck name to consider only one discrete deck. In either'
                             ' case, all other decks will be consolidated into a catch-all category.')
